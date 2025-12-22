@@ -35,7 +35,7 @@ function ToastItem({ toast }: { toast: ToastData }) {
       toast={toast}
       className={`${bg} border rounded-md p-4 shadow-lg flex items-start gap-3`}
     >
-      <Icon className={`w-5 h-5 ${iconColors[toastType]} flex-shrink-0 mt-0.5`} />
+      <Icon className={`w-5 h-5 ${iconColors[toastType]} shrink-0 mt-0.5`} />
       <div className="flex-1 min-w-0">
         <BaseToast.Title className="text-sm font-medium text-gray-900">
           {toast.title}
@@ -46,7 +46,7 @@ function ToastItem({ toast }: { toast: ToastData }) {
           </BaseToast.Description>
         )}
       </div>
-      <BaseToast.Close className="p-1 rounded hover:bg-black/5 text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0">
+      <BaseToast.Close className="p-1 rounded hover:bg-black/5 text-gray-400 hover:text-gray-600 transition-colors shrink-0">
         <HiX size={16} />
       </BaseToast.Close>
     </BaseToast.Root>
@@ -107,7 +107,7 @@ export function Toast({
 
   return (
     <div className={`${bg} border rounded-md p-4 shadow-lg flex items-start gap-3`}>
-      <Icon className={`w-5 h-5 ${iconColors[type]} flex-shrink-0 mt-0.5`} />
+      <Icon className={`w-5 h-5 ${iconColors[type]} shrink-0 mt-0.5`} />
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-gray-900">{title}</div>
         {description && (
