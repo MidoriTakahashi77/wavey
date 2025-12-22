@@ -6,7 +6,9 @@ import { Button, Modal, useToast } from "@/components/ui";
 import { VirtualOffice } from "@/components/features/office";
 import { WaveButton } from "@/components/features/wave/WaveButton";
 import { WaveHistory } from "@/components/features/wave/WaveHistory";
-import { HiArrowLeft, HiCog } from "react-icons/hi";
+import { WaveNotification } from "@/components/features/wave/WaveNotification";
+import { useWaveReceiver } from "@/hooks/useWaveReceiver";
+import { HiArrowLeft, HiCog, HiBell } from "react-icons/hi";
 
 type WaveResult = "accepted" | "declined" | "pending";
 
@@ -62,6 +64,49 @@ export default function WorkspacePage() {
   const [selectedMember, setSelectedMember] = useState<string | null>(null);
   const toast = useToast();
 
+  // Wave受信
+  const waveReceiver = useWaveReceiver({
+    onAccept: (wave) => {
+      toast.success("通話開始", `${wave.fromName}さんとの通話を開始します`);
+      // 履歴に追加
+      setWaves((prev) => [
+        {
+          id: wave.id,
+          fromName: wave.fromName,
+          toName: "自分",
+          timestamp: wave.timestamp,
+          result: "accepted",
+        },
+        ...prev,
+      ]);
+    },
+    onDecline: (wave) => {
+      toast.info("またの機会に", `${wave.fromName}さんへの応答を保留しました`);
+      // 履歴に追加
+      setWaves((prev) => [
+        {
+          id: wave.id,
+          fromName: wave.fromName,
+          toName: "自分",
+          timestamp: wave.timestamp,
+          result: "declined",
+        },
+        ...prev,
+      ]);
+    },
+  });
+
+  // デモ用：ランダムにWaveを受信
+  const simulateIncomingWave = () => {
+    const randomMember = MOCK_MEMBERS.filter((m) => m.id !== "me")[
+      Math.floor(Math.random() * (MOCK_MEMBERS.length - 1))
+    ];
+    waveReceiver.receiveWave({
+      fromId: randomMember.id,
+      fromName: randomMember.name,
+    });
+  };
+
   const handleMemberClick = (memberId: string) => {
     if (memberId === "me") return;
     setSelectedMember(memberId);
@@ -100,11 +145,18 @@ export default function WorkspacePage() {
             {MOCK_WORKSPACE.name}
           </h1>
         </div>
-        <Link href={`/workspaces/${MOCK_WORKSPACE.id}/settings`}>
-          <Button variant="ghost" size="sm">
-            <HiCog className="w-4 h-4" />
+        <div className="flex items-center gap-2">
+          {/* デモ用：Wave受信シミュレート */}
+          <Button variant="secondary" size="sm" onClick={simulateIncomingWave}>
+            <HiBell className="w-4 h-4 mr-1" />
+            Wave受信デモ
           </Button>
-        </Link>
+          <Link href={`/workspaces/${MOCK_WORKSPACE.id}/settings`}>
+            <Button variant="ghost" size="sm">
+              <HiCog className="w-4 h-4" />
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Virtual Office */}
@@ -147,6 +199,14 @@ export default function WorkspacePage() {
           </Button>
         </div>
       </Modal>
+
+      {/* Wave受信通知 */}
+      <WaveNotification
+        wave={waveReceiver.currentWave}
+        queueCount={waveReceiver.waveCount}
+        onAccept={waveReceiver.acceptWave}
+        onDecline={waveReceiver.declineWave}
+      />
     </div>
   );
 }
