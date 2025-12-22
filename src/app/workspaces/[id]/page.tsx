@@ -7,7 +7,9 @@ import { VirtualOffice } from "@/components/features/office";
 import { WaveButton } from "@/components/features/wave/WaveButton";
 import { WaveHistory } from "@/components/features/wave/WaveHistory";
 import { WaveNotification } from "@/components/features/wave/WaveNotification";
+import { CallModal } from "@/components/features/call";
 import { useWaveReceiver } from "@/hooks/useWaveReceiver";
+import { useCall } from "@/hooks/useCall";
 import { HiArrowLeft, HiCog, HiBell } from "react-icons/hi";
 
 type WaveResult = "accepted" | "declined" | "pending";
@@ -64,10 +66,21 @@ export default function WorkspacePage() {
   const [selectedMember, setSelectedMember] = useState<string | null>(null);
   const toast = useToast();
 
+  // 通話管理
+  const call = useCall({
+    onCallStart: () => {
+      toast.success("通話開始", "接続しました");
+    },
+    onCallEnd: (duration) => {
+      const mins = Math.floor(duration / 60);
+      const secs = duration % 60;
+      toast.info("通話終了", `通話時間: ${mins}分${secs}秒`);
+    },
+  });
+
   // Wave受信
   const waveReceiver = useWaveReceiver({
     onAccept: (wave) => {
-      toast.success("通話開始", `${wave.fromName}さんとの通話を開始します`);
       // 履歴に追加
       setWaves((prev) => [
         {
@@ -79,6 +92,11 @@ export default function WorkspacePage() {
         },
         ...prev,
       ]);
+      // 通話を開始
+      call.startCall({
+        id: wave.fromId,
+        name: wave.fromName,
+      });
     },
     onDecline: (wave) => {
       toast.info("またの機会に", `${wave.fromName}さんへの応答を保留しました`);
@@ -206,6 +224,16 @@ export default function WorkspacePage() {
         queueCount={waveReceiver.waveCount}
         onAccept={waveReceiver.acceptWave}
         onDecline={waveReceiver.declineWave}
+      />
+
+      {/* 通話画面 */}
+      <CallModal
+        state={call.state}
+        participant={call.participant}
+        duration={call.duration}
+        isMuted={call.isMuted}
+        onToggleMute={call.toggleMute}
+        onEndCall={call.endCall}
       />
     </div>
   );
