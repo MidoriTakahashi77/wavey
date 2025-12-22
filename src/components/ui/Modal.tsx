@@ -2,6 +2,7 @@
 
 import { Dialog } from "@base-ui/react/dialog";
 import { ReactNode } from "react";
+import { HiX } from "react-icons/hi";
 
 type ModalProps = {
   open: boolean;
@@ -30,7 +31,7 @@ export function Modal({
               </Dialog.Title>
             )}
             <Dialog.Close className="p-1 rounded hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors ml-auto">
-              <CloseIcon />
+              <HiX size={20} />
             </Dialog.Close>
           </div>
           {description && (
@@ -42,23 +43,5 @@ export function Modal({
         </Dialog.Popup>
       </Dialog.Portal>
     </Dialog.Root>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
   );
 }
