@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, Card, Modal, Avatar } from "@/components/ui";
+import { Button, Input, Card, Modal, Avatar, Badge, useToast } from "@/components/ui";
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
+  const toast = useToast();
 
   return (
     <div className="min-h-screen p-8">
@@ -152,6 +153,64 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Badge */}
+      <section className="mb-12">
+        <h2 className="text-lg font-semibold text-gray-700 mb-4">Badge</h2>
+
+        <div className="mb-6">
+          <h3 className="text-sm text-gray-500 mb-2">Variants</h3>
+          <div className="flex gap-2 flex-wrap">
+            <Badge>Default</Badge>
+            <Badge variant="success">Success</Badge>
+            <Badge variant="warning">Warning</Badge>
+            <Badge variant="error">Error</Badge>
+            <Badge variant="info">Info</Badge>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <h3 className="text-sm text-gray-500 mb-2">Use Cases</h3>
+          <div className="flex gap-4 flex-wrap items-center">
+            <Badge variant="success">入室中</Badge>
+            <Badge variant="error">通話中</Badge>
+            <Badge variant="warning">離席中</Badge>
+            <Badge>オフライン</Badge>
+          </div>
+        </div>
+      </section>
+
+      {/* Toast */}
+      <section className="mb-12">
+        <h2 className="text-lg font-semibold text-gray-700 mb-4">Toast</h2>
+
+        <div className="flex gap-2 flex-wrap">
+          <Button
+            variant="secondary"
+            onClick={() => toast.success("成功", "操作が完了しました")}
+          >
+            Success
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => toast.error("エラー", "問題が発生しました")}
+          >
+            Error
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => toast.info("お知らせ", "新しい更新があります")}
+          >
+            Info
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => toast.wave("👋 Wave", "田中さんが手を振っています")}
+          >
+            Wave
+          </Button>
         </div>
       </section>
     </div>
