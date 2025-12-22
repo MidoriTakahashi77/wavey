@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/components/ui";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -29,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoSansJP.variable} antialiased`}
       >
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );
