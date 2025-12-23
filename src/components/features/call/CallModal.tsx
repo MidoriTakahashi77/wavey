@@ -29,15 +29,9 @@ export function CallModal({
       <div className="text-center text-white">
         {/* Status */}
         <div className="mb-8">
-          {state === "connecting" && (
-            <p className="text-gray-400 animate-pulse">接続中...</p>
-          )}
-          {state === "connected" && (
-            <CallTimer duration={duration} className="text-gray-300" />
-          )}
-          {state === "ended" && (
-            <p className="text-gray-400">通話終了</p>
-          )}
+          {state === "connecting" && <p className="animate-pulse text-gray-400">接続中...</p>}
+          {state === "connected" && <CallTimer duration={duration} className="text-gray-300" />}
+          {state === "ended" && <p className="text-gray-400">通話終了</p>}
         </div>
 
         {/* Participant */}
@@ -45,29 +39,21 @@ export function CallModal({
           <div className="relative inline-block">
             <Avatar size="lg" status="busy" />
             {state === "connected" && (
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-gray-900 animate-pulse" />
+              <div className="absolute -right-1 -bottom-1 h-4 w-4 animate-pulse rounded-full border-2 border-gray-900 bg-green-500" />
             )}
           </div>
           <h2 className="mt-4 text-2xl font-bold">{participant.name}</h2>
-          {state === "connected" && (
-            <p className="text-gray-400 text-sm mt-1">通話中</p>
-          )}
+          {state === "connected" && <p className="mt-1 text-sm text-gray-400">通話中</p>}
         </div>
 
         {/* Mute Indicator */}
         {isMuted && state === "connected" && (
-          <div className="mb-6 text-red-400 text-sm">
-            🔇 マイクがミュートされています
-          </div>
+          <div className="mb-6 text-sm text-red-400">🔇 マイクがミュートされています</div>
         )}
 
         {/* Controls */}
         {state !== "ended" && (
-          <CallControls
-            isMuted={isMuted}
-            onToggleMute={onToggleMute}
-            onEndCall={onEndCall}
-          />
+          <CallControls isMuted={isMuted} onToggleMute={onToggleMute} onEndCall={onEndCall} />
         )}
       </div>
     </div>

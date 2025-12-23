@@ -6,8 +6,7 @@ type CardProps = ComponentProps<"div"> & {
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ clickable = false, className = "", children, ...props }, ref) => {
-    const baseStyles =
-      "bg-white border border-gray-200 rounded-md p-4 transition-colors";
+    const baseStyles = "bg-white border border-gray-200 rounded-md p-4 transition-colors";
     const clickableStyles = clickable
       ? "cursor-pointer hover:border-gray-300 hover:bg-gray-50 active:bg-gray-100"
       : "";

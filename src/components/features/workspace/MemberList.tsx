@@ -24,7 +24,7 @@ export function MemberList({ members, currentUserId, onWave }: MemberListProps) 
     <Card className="p-2">
       {onlineMembers.length > 0 && (
         <div className="mb-2">
-          <h3 className="text-xs font-medium text-gray-500 uppercase px-3 py-2">
+          <h3 className="px-3 py-2 text-xs font-medium text-gray-500 uppercase">
             オンライン — {onlineMembers.length}
           </h3>
           <div className="space-y-1">
@@ -42,7 +42,7 @@ export function MemberList({ members, currentUserId, onWave }: MemberListProps) 
 
       {offlineMembers.length > 0 && (
         <div>
-          <h3 className="text-xs font-medium text-gray-500 uppercase px-3 py-2">
+          <h3 className="px-3 py-2 text-xs font-medium text-gray-500 uppercase">
             オフライン — {offlineMembers.length}
           </h3>
           <div className="space-y-1">

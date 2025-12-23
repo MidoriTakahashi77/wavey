@@ -21,13 +21,11 @@ const colorStyles: Record<RoomColor, string> = {
 
 export function Room({ name, color, children, className = "" }: RoomProps) {
   return (
-    <div
-      className={`relative rounded-lg border-2 p-4 ${colorStyles[color]} ${className}`}
-    >
-      <div className="absolute -top-3 left-3 bg-white px-2 py-0.5 rounded text-xs font-medium text-gray-600 border">
+    <div className={`relative rounded-lg border-2 p-4 ${colorStyles[color]} ${className}`}>
+      <div className="absolute -top-3 left-3 rounded border bg-white px-2 py-0.5 text-xs font-medium text-gray-600">
         {name}
       </div>
-      <div className="flex flex-wrap gap-3 justify-center items-end min-h-[120px] pt-2">
+      <div className="flex min-h-[120px] flex-wrap items-end justify-center gap-3 pt-2">
         {children}
       </div>
     </div>

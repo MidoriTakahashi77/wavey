@@ -50,13 +50,11 @@ export function TransferOwnerModal({
     >
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            譲渡先メンバー
-          </label>
+          <label className="mb-2 block text-sm font-medium text-gray-700">譲渡先メンバー</label>
           <select
             value={selectedMember || ""}
             onChange={(e) => setSelectedMember(e.target.value || null)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           >
             <option value="">選択してください</option>
             {members.map((member) => (
@@ -68,7 +66,7 @@ export function TransferOwnerModal({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="mb-2 block text-sm font-medium text-gray-700">
             確認のため「譲渡する」と入力
           </label>
           <input
@@ -76,7 +74,7 @@ export function TransferOwnerModal({
             value={confirmText}
             onChange={(e) => setConfirmText(e.target.value)}
             placeholder="譲渡する"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
 

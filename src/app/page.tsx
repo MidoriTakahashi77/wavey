@@ -30,33 +30,29 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+    <div className="mx-auto max-w-4xl p-6">
+      <div className="mb-6 flex items-center justify-between">
         <h1 className="text-xl font-bold text-gray-900">ワークスペース</h1>
         <Button onClick={() => setModalOpen(true)}>
-          <HiPlus className="w-4 h-4 mr-1" />
+          <HiPlus className="mr-1 h-4 w-4" />
           新規作成
         </Button>
       </div>
 
       {workspaces.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <HiOutlineCollection className="w-8 h-8 text-gray-400" />
+        <div className="py-16 text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+            <HiOutlineCollection className="h-8 w-8 text-gray-400" />
           </div>
-          <h2 className="text-lg font-medium text-gray-900 mb-2">
-            ワークスペースがありません
-          </h2>
-          <p className="text-sm text-gray-500 mb-6">
-            チームで使うワークスペースを作成しましょう
-          </p>
+          <h2 className="mb-2 text-lg font-medium text-gray-900">ワークスペースがありません</h2>
+          <p className="mb-6 text-sm text-gray-500">チームで使うワークスペースを作成しましょう</p>
           <Button onClick={() => setModalOpen(true)}>
-            <HiPlus className="w-4 h-4 mr-1" />
+            <HiPlus className="mr-1 h-4 w-4" />
             ワークスペースを作成
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {workspaces.map((workspace) => (
             <WorkspaceCard key={workspace.id} {...workspace} />
           ))}

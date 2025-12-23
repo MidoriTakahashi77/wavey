@@ -23,13 +23,11 @@ export function LoginForm() {
   if (isSubmitted) {
     return (
       <div className="text-center">
-        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <HiCheckCircle className="w-6 h-6 text-green-600" />
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+          <HiCheckCircle className="h-6 w-6 text-green-600" />
         </div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">
-          メールを送信しました
-        </h2>
-        <p className="text-sm text-gray-600 mb-4">
+        <h2 className="mb-2 text-lg font-semibold text-gray-900">メールを送信しました</h2>
+        <p className="mb-4 text-sm text-gray-600">
           <span className="font-medium">{email}</span> に
           <br />
           ログインリンクを送信しました。
@@ -53,12 +51,10 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="text-center mb-6">
-        <div className="text-4xl mb-2">👋</div>
+      <div className="mb-6 text-center">
+        <div className="mb-2 text-4xl">👋</div>
         <h1 className="text-xl font-bold text-gray-900">Waveyにログイン</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          メールアドレスを入力してください
-        </p>
+        <p className="mt-1 text-sm text-gray-500">メールアドレスを入力してください</p>
       </div>
 
       <div className="space-y-4">
@@ -79,12 +75,12 @@ export function LoginForm() {
           loading={isSubmitting}
           disabled={!email || isSubmitting}
         >
-          <HiOutlineMail className="w-4 h-4 mr-2" />
+          <HiOutlineMail className="mr-2 h-4 w-4" />
           ログインリンクを送信
         </Button>
       </div>
 
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-center text-xs text-gray-500">
         パスワードは不要です。メールに届くリンクからログインできます。
       </p>
     </form>

@@ -9,10 +9,8 @@ type InviteLinkSectionProps = {
   onGenerateLink: () => string;
 };
 
-export function InviteLinkSection({
-  workspaceId,
-  onGenerateLink,
-}: InviteLinkSectionProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function InviteLinkSection({ workspaceId, onGenerateLink }: InviteLinkSectionProps) {
   const [inviteLink, setInviteLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -43,11 +41,9 @@ export function InviteLinkSection({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold text-gray-900 mb-2">招待リンク</h2>
-      <p className="text-sm text-gray-500 mb-4">
-        リンクを共有してメンバーを招待できます
-      </p>
+    <div className="rounded-lg border border-gray-200 bg-white p-6">
+      <h2 className="mb-2 text-lg font-semibold text-gray-900">招待リンク</h2>
+      <p className="mb-4 text-sm text-gray-500">リンクを共有してメンバーを招待できます</p>
 
       {inviteLink ? (
         <div className="space-y-3">
@@ -56,35 +52,25 @@ export function InviteLinkSection({
               type="text"
               value={inviteLink}
               readOnly
-              className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600"
+              className="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-600"
             />
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={handleCopyLink}
-              className="shrink-0"
-            >
+            <Button variant="secondary" size="sm" onClick={handleCopyLink} className="shrink-0">
               {copied ? (
                 <>
-                  <HiCheck className="w-4 h-4 mr-1 text-green-600" />
+                  <HiCheck className="mr-1 h-4 w-4 text-green-600" />
                   コピー済み
                 </>
               ) : (
                 <>
-                  <HiClipboardCopy className="w-4 h-4 mr-1" />
+                  <HiClipboardCopy className="mr-1 h-4 w-4" />
                   コピー
                 </>
               )}
             </Button>
           </div>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleGenerateLink}
-            className="text-gray-500"
-          >
-            <HiRefresh className="w-4 h-4 mr-1" />
+          <Button variant="ghost" size="sm" onClick={handleGenerateLink} className="text-gray-500">
+            <HiRefresh className="mr-1 h-4 w-4" />
             新しいリンクを生成
           </Button>
         </div>

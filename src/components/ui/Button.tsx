@@ -17,8 +17,7 @@ const variantStyles: Record<ButtonVariant, string> = {
     "bg-gray-900 text-gray-50 hover:bg-gray-800 active:bg-gray-700 disabled:bg-gray-300 disabled:text-gray-500",
   secondary:
     "bg-gray-100 text-gray-900 border border-gray-300 hover:bg-gray-200 active:bg-gray-300 disabled:bg-gray-100 disabled:text-gray-400",
-  ghost:
-    "bg-transparent text-gray-700 hover:bg-gray-100 active:bg-gray-200 disabled:text-gray-400",
+  ghost: "bg-transparent text-gray-700 hover:bg-gray-100 active:bg-gray-200 disabled:text-gray-400",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -68,19 +67,12 @@ Button.displayName = "Button";
 function LoadingSpinner() {
   return (
     <svg
-      className="animate-spin h-4 w-4"
+      className="h-4 w-4 animate-spin"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
     >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
       <path
         className="opacity-75"
         fill="currentColor"

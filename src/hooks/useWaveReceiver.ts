@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 
 export type IncomingWave = {
   id: string;
@@ -29,22 +29,28 @@ export function useWaveReceiver(options: UseWaveReceiverOptions = {}) {
   }, []);
 
   // Wave承諾（話す）
-  const acceptWave = useCallback((waveId: string) => {
-    const wave = incomingWaves.find((w) => w.id === waveId);
-    if (wave) {
-      options.onAccept?.(wave);
-      setIncomingWaves((prev) => prev.filter((w) => w.id !== waveId));
-    }
-  }, [incomingWaves, options]);
+  const acceptWave = useCallback(
+    (waveId: string) => {
+      const wave = incomingWaves.find((w) => w.id === waveId);
+      if (wave) {
+        options.onAccept?.(wave);
+        setIncomingWaves((prev) => prev.filter((w) => w.id !== waveId));
+      }
+    },
+    [incomingWaves, options]
+  );
 
   // Wave辞退（あとで）
-  const declineWave = useCallback((waveId: string) => {
-    const wave = incomingWaves.find((w) => w.id === waveId);
-    if (wave) {
-      options.onDecline?.(wave);
-      setIncomingWaves((prev) => prev.filter((w) => w.id !== waveId));
-    }
-  }, [incomingWaves, options]);
+  const declineWave = useCallback(
+    (waveId: string) => {
+      const wave = incomingWaves.find((w) => w.id === waveId);
+      if (wave) {
+        options.onDecline?.(wave);
+        setIncomingWaves((prev) => prev.filter((w) => w.id !== waveId));
+      }
+    },
+    [incomingWaves, options]
+  );
 
   // 最新のWaveを取得
   const currentWave = incomingWaves[0] || null;

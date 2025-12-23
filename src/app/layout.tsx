@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body
-        className={`${inter.variable} ${notoSansJP.variable} antialiased min-h-screen bg-gray-50`}
+        className={`${inter.variable} ${notoSansJP.variable} min-h-screen bg-gray-50 antialiased`}
       >
         <ToastProvider>
           <Header />

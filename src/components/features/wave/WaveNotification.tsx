@@ -12,17 +12,13 @@ type WaveNotificationProps = {
   onDecline: (waveId: string) => void;
 };
 
-export function WaveNotification({
-  wave,
-  queueCount,
-  onAccept,
-  onDecline,
-}: WaveNotificationProps) {
+export function WaveNotification({ wave, queueCount, onAccept, onDecline }: WaveNotificationProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     if (wave) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsVisible(true);
       // 少し遅れてアニメーション開始
       setTimeout(() => setIsAnimating(true), 50);
@@ -35,10 +31,10 @@ export function WaveNotification({
   if (!isVisible || !wave) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 pointer-events-none">
+    <div className="pointer-events-none fixed inset-0 z-50 flex items-start justify-center pt-20">
       {/* Backdrop */}
       <div
-        className={`absolute inset-0 bg-black/20 transition-opacity duration-300 pointer-events-auto ${
+        className={`pointer-events-auto absolute inset-0 bg-black/20 transition-opacity duration-300 ${
           isAnimating ? "opacity-100" : "opacity-0"
         }`}
         onClick={() => onDecline(wave.id)}
@@ -46,10 +42,8 @@ export function WaveNotification({
 
       {/* Notification Card */}
       <div
-        className={`relative bg-white rounded-2xl shadow-2xl p-6 mx-4 max-w-sm w-full pointer-events-auto transform transition-all duration-300 ${
-          isAnimating
-            ? "translate-y-0 opacity-100 scale-100"
-            : "-translate-y-8 opacity-0 scale-95"
+        className={`pointer-events-auto relative mx-4 w-full max-w-sm transform rounded-2xl bg-white p-6 shadow-2xl transition-all duration-300 ${
+          isAnimating ? "translate-y-0 scale-100 opacity-100" : "-translate-y-8 scale-95 opacity-0"
         }`}
       >
         {/* Queue Badge */}
@@ -61,27 +55,22 @@ export function WaveNotification({
 
         {/* Wave Animation */}
         {/* TODO: wave.gifUrl がある場合は👋の代わりに送信者が選んだGIFを表示する */}
-        <div className="text-center mb-4">
-          <div className="text-6xl animate-wave">👋</div>
+        <div className="mb-4 text-center">
+          <div className="animate-wave text-6xl">👋</div>
         </div>
 
         {/* From User */}
-        <div className="flex flex-col items-center mb-6">
+        <div className="mb-6 flex flex-col items-center">
           <Avatar size="lg" status="online" />
-          <h3 className="mt-3 text-lg font-bold text-gray-900">
-            {wave.fromName}
-          </h3>
-          <p className="text-gray-500 text-sm">さんが手を振っています</p>
+          <h3 className="mt-3 text-lg font-bold text-gray-900">{wave.fromName}</h3>
+          <p className="text-sm text-gray-500">さんが手を振っています</p>
         </div>
 
         {/* GIF if present */}
         {wave.gifUrl && (
           <div className="mb-4 flex justify-center">
-            <img
-              src={wave.gifUrl}
-              alt="Wave GIF"
-              className="rounded-lg max-h-32 object-contain"
-            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={wave.gifUrl} alt="Wave GIF" className="max-h-32 rounded-lg object-contain" />
           </div>
         )}
 
@@ -92,14 +81,14 @@ export function WaveNotification({
             className="flex-1 justify-center"
             onClick={() => onDecline(wave.id)}
           >
-            <HiX className="w-4 h-4 mr-1" />
+            <HiX className="mr-1 h-4 w-4" />
             あとで
           </Button>
           <Button
             className="flex-1 justify-center bg-green-600 hover:bg-green-700"
             onClick={() => onAccept(wave.id)}
           >
-            <HiPhone className="w-4 h-4 mr-1" />
+            <HiPhone className="mr-1 h-4 w-4" />
             話す
           </Button>
         </div>

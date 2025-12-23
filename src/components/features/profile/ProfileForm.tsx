@@ -26,11 +26,9 @@ export function ProfileForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="text-center mb-6">
+      <div className="mb-6 text-center">
         <h1 className="text-xl font-bold text-gray-900">プロフィール設定</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          あなたの表示名とアバターを設定してください
-        </p>
+        <p className="mt-1 text-sm text-gray-500">あなたの表示名とアバターを設定してください</p>
       </div>
 
       <div className="space-y-6">
