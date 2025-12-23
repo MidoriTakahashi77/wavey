@@ -22,18 +22,21 @@ export function useCall(options: UseCallOptions = {}) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // 通話開始
-  const startCall = useCallback((targetParticipant: CallParticipant) => {
-    setState("connecting");
-    setParticipant(targetParticipant);
-    setDuration(0);
-    setIsMuted(false);
+  const startCall = useCallback(
+    (targetParticipant: CallParticipant) => {
+      setState("connecting");
+      setParticipant(targetParticipant);
+      setDuration(0);
+      setIsMuted(false);
 
-    // モック: 1秒後に接続完了
-    setTimeout(() => {
-      setState("connected");
-      options.onCallStart?.();
-    }, 1000);
-  }, [options]);
+      // モック: 1秒後に接続完了
+      setTimeout(() => {
+        setState("connected");
+        options.onCallStart?.();
+      }, 1000);
+    },
+    [options]
+  );
 
   // 通話終了
   const endCall = useCallback(() => {

@@ -75,7 +75,15 @@ export const MOCK_USERS: User[] = [
 ];
 
 export const MOCK_MEMBERS: Member[] = [
-  { id: "me", name: "自分", status: "online", statusEmoji: "💻", roomId: "room1", isOwner: true, isMe: true },
+  {
+    id: "me",
+    name: "自分",
+    status: "online",
+    statusEmoji: "💻",
+    roomId: "room1",
+    isOwner: true,
+    isMe: true,
+  },
   { id: "2", name: "田中", status: "online", statusEmoji: "👍", roomId: "room1" },
   { id: "3", name: "佐藤", status: "busy", statusEmoji: "📞", roomId: "room2" },
   { id: "4", name: "鈴木", status: "online", statusEmoji: "😊", roomId: "room2" },
