@@ -33,20 +33,20 @@ function ToastItem({ toast }: { toast: ToastData }) {
   return (
     <BaseToast.Root
       toast={toast}
-      className={`${bg} border rounded-md p-4 shadow-lg flex items-start gap-3`}
+      className={`${bg} flex items-start gap-3 rounded-md border p-4 shadow-lg`}
     >
-      <Icon className={`w-5 h-5 ${iconColors[toastType]} shrink-0 mt-0.5`} />
-      <div className="flex-1 min-w-0">
+      <Icon className={`h-5 w-5 ${iconColors[toastType]} mt-0.5 shrink-0`} />
+      <div className="min-w-0 flex-1">
         <BaseToast.Title className="text-sm font-medium text-gray-900">
           {toast.title}
         </BaseToast.Title>
         {toast.description && (
-          <BaseToast.Description className="text-sm text-gray-600 mt-1">
+          <BaseToast.Description className="mt-1 text-sm text-gray-600">
             {toast.description}
           </BaseToast.Description>
         )}
       </div>
-      <BaseToast.Close className="p-1 rounded hover:bg-black/5 text-gray-400 hover:text-gray-600 transition-colors shrink-0">
+      <BaseToast.Close className="shrink-0 rounded p-1 text-gray-400 transition-colors hover:bg-black/5 hover:text-gray-600">
         <HiX size={16} />
       </BaseToast.Close>
     </BaseToast.Root>
@@ -57,7 +57,7 @@ function ToastList() {
   const { toasts } = BaseToast.useToastManager();
 
   return (
-    <BaseToast.Viewport className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 w-80">
+    <BaseToast.Viewport className="fixed right-4 bottom-4 z-50 flex w-80 flex-col gap-2">
       {toasts.map((toast) => (
         <ToastItem key={toast.id} toast={toast as ToastData} />
       ))}
@@ -106,13 +106,11 @@ export function Toast({
   const { bg, icon: Icon } = typeStyles[type];
 
   return (
-    <div className={`${bg} border rounded-md p-4 shadow-lg flex items-start gap-3`}>
-      <Icon className={`w-5 h-5 ${iconColors[type]} shrink-0 mt-0.5`} />
-      <div className="flex-1 min-w-0">
+    <div className={`${bg} flex items-start gap-3 rounded-md border p-4 shadow-lg`}>
+      <Icon className={`h-5 w-5 ${iconColors[type]} mt-0.5 shrink-0`} />
+      <div className="min-w-0 flex-1">
         <div className="text-sm font-medium text-gray-900">{title}</div>
-        {description && (
-          <div className="text-sm text-gray-600 mt-1">{description}</div>
-        )}
+        {description && <div className="mt-1 text-sm text-gray-600">{description}</div>}
       </div>
     </div>
   );

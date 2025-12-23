@@ -13,7 +13,7 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -26,10 +26,14 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
+    "@hono/swagger-ui": "^0.5.2",
+    "@hono/zod-openapi": "0.18.0",
+    "hono": "^4.11.1",
     "next": "16.1.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "zod": "3.24.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",

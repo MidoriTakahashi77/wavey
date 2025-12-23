@@ -6,9 +6,7 @@ test.describe("Waveフロー", () => {
     await page.goto("/workspaces/1");
   });
 
-  test("ワークスペースに入室してメンバー一覧が表示される", async ({
-    page,
-  }) => {
+  test("ワークスペースに入室してメンバー一覧が表示される", async ({ page }) => {
     // ワークスペース名が表示される
     await expect(page.locator("h1")).toContainText("開発チーム");
 

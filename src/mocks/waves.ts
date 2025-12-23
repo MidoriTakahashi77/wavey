@@ -48,7 +48,12 @@ export const MOCK_WAVES: Wave[] = [
 export const MOCK_WAVES_WITH_NAMES: WaveWithNames[] = [
   { ...MOCK_WAVES[0], fromName: "田中", toName: "自分" },
   { ...MOCK_WAVES[1], fromName: "自分", toName: "佐藤" },
-  { ...MOCK_WAVES[2], fromName: "鈴木", toName: "自分", gifUrl: "https://media.tenor.com/example.gif" },
+  {
+    ...MOCK_WAVES[2],
+    fromName: "鈴木",
+    toName: "自分",
+    gifUrl: "https://media.tenor.com/example.gif",
+  },
   { ...MOCK_WAVES[3], fromName: "自分", toName: "高橋" },
 ];
 
@@ -59,7 +64,5 @@ export function getWavesByUserId(userId: string): WaveWithNames[] {
 }
 
 export function getWavesByWorkspaceId(workspaceId: string): WaveWithNames[] {
-  return MOCK_WAVES_WITH_NAMES.filter(
-    (wave) => wave.workspaceId === workspaceId
-  );
+  return MOCK_WAVES_WITH_NAMES.filter((wave) => wave.workspaceId === workspaceId);
 }
