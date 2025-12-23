@@ -18,7 +18,7 @@ export function SkinSelector({ value, onChange }: SkinSelectorProps) {
   return (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-gray-700">
-        アバタースキン
+        スキンを選択
       </label>
       <div className="grid grid-cols-3 gap-3">
         {SKINS.map((skin) => {
@@ -27,6 +27,7 @@ export function SkinSelector({ value, onChange }: SkinSelectorProps) {
             <button
               key={skin.id}
               type="button"
+              data-testid="skin-option"
               onClick={() => onChange(skin.id)}
               className={`
                 relative p-2 rounded-lg border-2 transition-all
