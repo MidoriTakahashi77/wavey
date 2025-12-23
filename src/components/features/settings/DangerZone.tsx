@@ -9,10 +9,7 @@ type DangerZoneProps = {
   onDeleteWorkspace: () => void;
 };
 
-export function DangerZone({
-  workspaceName,
-  onDeleteWorkspace,
-}: DangerZoneProps) {
+export function DangerZone({ workspaceName, onDeleteWorkspace }: DangerZoneProps) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
 
@@ -31,16 +28,14 @@ export function DangerZone({
 
   return (
     <>
-      <div className="bg-white rounded-lg border border-red-200 p-6">
+      <div className="rounded-lg border border-red-200 bg-white p-6">
         <div className="flex items-start gap-3">
-          <div className="p-2 bg-red-100 rounded-lg">
-            <HiExclamation className="w-5 h-5 text-red-600" />
+          <div className="rounded-lg bg-red-100 p-2">
+            <HiExclamation className="h-5 w-5 text-red-600" />
           </div>
           <div className="flex-1">
-            <h2 className="text-lg font-semibold text-red-900 mb-1">
-              危険な操作
-            </h2>
-            <p className="text-sm text-red-700 mb-4">
+            <h2 className="mb-1 text-lg font-semibold text-red-900">危険な操作</h2>
+            <p className="mb-4 text-sm text-red-700">
               この操作は取り消せません。すべてのデータが削除されます。
             </p>
             <Button
@@ -62,7 +57,7 @@ export function DangerZone({
         description="この操作は取り消せません"
       >
         <div className="space-y-4">
-          <div className="p-4 bg-red-50 rounded-lg">
+          <div className="rounded-lg bg-red-50 p-4">
             <p className="text-sm text-red-800">
               <strong>{workspaceName}</strong>{" "}
               を削除すると、すべてのメンバー、履歴、設定が完全に削除されます。
@@ -70,7 +65,7 @@ export function DangerZone({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="mb-2 block text-sm font-medium text-gray-700">
               確認のためワークスペース名を入力
             </label>
             <input
@@ -78,7 +73,7 @@ export function DangerZone({
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}
               placeholder={workspaceName}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none"
             />
           </div>
 

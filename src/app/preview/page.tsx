@@ -9,17 +9,15 @@ export default function Home() {
 
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-8">
-        Wavey コンポーネントプレビュー
-      </h1>
+      <h1 className="mb-8 text-2xl font-bold text-gray-900">Wavey コンポーネントプレビュー</h1>
 
       {/* Button */}
       <section className="mb-12">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Button</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-700">Button</h2>
 
         <div className="mb-6">
-          <h3 className="text-sm text-gray-500 mb-2">Variants</h3>
-          <div className="flex gap-4 flex-wrap">
+          <h3 className="mb-2 text-sm text-gray-500">Variants</h3>
+          <div className="flex flex-wrap gap-4">
             <Button variant="primary">Primary</Button>
             <Button variant="secondary">Secondary</Button>
             <Button variant="ghost">Ghost</Button>
@@ -27,8 +25,8 @@ export default function Home() {
         </div>
 
         <div className="mb-6">
-          <h3 className="text-sm text-gray-500 mb-2">Sizes</h3>
-          <div className="flex gap-4 items-center flex-wrap">
+          <h3 className="mb-2 text-sm text-gray-500">Sizes</h3>
+          <div className="flex flex-wrap items-center gap-4">
             <Button size="sm">Small</Button>
             <Button size="md">Medium</Button>
             <Button size="lg">Large</Button>
@@ -36,8 +34,8 @@ export default function Home() {
         </div>
 
         <div className="mb-6">
-          <h3 className="text-sm text-gray-500 mb-2">States</h3>
-          <div className="flex gap-4 flex-wrap">
+          <h3 className="mb-2 text-sm text-gray-500">States</h3>
+          <div className="flex flex-wrap gap-4">
             <Button disabled>Disabled</Button>
             <Button loading>Loading</Button>
           </div>
@@ -46,7 +44,7 @@ export default function Home() {
 
       {/* Input */}
       <section className="mb-12">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Input</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-700">Input</h2>
 
         <div className="mb-6 max-w-sm">
           <Input label="メールアドレス" type="email" placeholder="you@example.com" />
@@ -76,24 +74,24 @@ export default function Home() {
 
       {/* Card */}
       <section className="mb-12">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Card</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-700">Card</h2>
 
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex flex-wrap gap-4">
           <Card className="w-64">
-            <h3 className="text-gray-900 font-bold">開発チーム</h3>
-            <p className="text-gray-500 text-sm mt-1">3人のメンバー</p>
+            <h3 className="font-bold text-gray-900">開発チーム</h3>
+            <p className="mt-1 text-sm text-gray-500">3人のメンバー</p>
           </Card>
 
           <Card clickable className="w-64" onClick={() => alert("clicked!")}>
-            <h3 className="text-gray-900 font-bold">クリック可能</h3>
-            <p className="text-gray-500 text-sm mt-1">クリックしてみてください</p>
+            <h3 className="font-bold text-gray-900">クリック可能</h3>
+            <p className="mt-1 text-sm text-gray-500">クリックしてみてください</p>
           </Card>
         </div>
       </section>
 
       {/* Modal */}
       <section className="mb-12">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Modal</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-700">Modal</h2>
 
         <Button onClick={() => setModalOpen(true)}>モーダルを開く</Button>
 
@@ -105,7 +103,7 @@ export default function Home() {
         >
           <div className="space-y-4">
             <Input label="ワークスペース名" placeholder="例: 開発チーム" />
-            <div className="flex gap-2 justify-end">
+            <div className="flex justify-end gap-2">
               <Button variant="ghost" onClick={() => setModalOpen(false)}>
                 キャンセル
               </Button>
@@ -117,11 +115,11 @@ export default function Home() {
 
       {/* Avatar */}
       <section className="mb-12">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Avatar</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-700">Avatar</h2>
 
         <div className="mb-6">
-          <h3 className="text-sm text-gray-500 mb-2">Sizes</h3>
-          <div className="flex gap-4 items-end">
+          <h3 className="mb-2 text-sm text-gray-500">Sizes</h3>
+          <div className="flex items-end gap-4">
             <Avatar size="sm" />
             <Avatar size="md" />
             <Avatar size="lg" />
@@ -129,8 +127,8 @@ export default function Home() {
         </div>
 
         <div className="mb-6">
-          <h3 className="text-sm text-gray-500 mb-2">Status</h3>
-          <div className="flex gap-4 items-center">
+          <h3 className="mb-2 text-sm text-gray-500">Status</h3>
+          <div className="flex items-center gap-4">
             <Avatar status="online" />
             <Avatar status="busy" />
             <Avatar status="away" />
@@ -139,7 +137,7 @@ export default function Home() {
         </div>
 
         <div className="mb-6">
-          <h3 className="text-sm text-gray-500 mb-2">With Name</h3>
+          <h3 className="mb-2 text-sm text-gray-500">With Name</h3>
           <div className="flex gap-6">
             <div className="flex items-center gap-2">
               <Avatar size="sm" status="online" />
@@ -148,8 +146,8 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <Avatar size="md" status="busy" />
               <div>
-                <p className="text-gray-900 font-medium">佐藤花子</p>
-                <p className="text-gray-500 text-sm">通話中</p>
+                <p className="font-medium text-gray-900">佐藤花子</p>
+                <p className="text-sm text-gray-500">通話中</p>
               </div>
             </div>
           </div>
@@ -158,11 +156,11 @@ export default function Home() {
 
       {/* Badge */}
       <section className="mb-12">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Badge</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-700">Badge</h2>
 
         <div className="mb-6">
-          <h3 className="text-sm text-gray-500 mb-2">Variants</h3>
-          <div className="flex gap-2 flex-wrap">
+          <h3 className="mb-2 text-sm text-gray-500">Variants</h3>
+          <div className="flex flex-wrap gap-2">
             <Badge>Default</Badge>
             <Badge variant="success">Success</Badge>
             <Badge variant="warning">Warning</Badge>
@@ -172,8 +170,8 @@ export default function Home() {
         </div>
 
         <div className="mb-6">
-          <h3 className="text-sm text-gray-500 mb-2">Use Cases</h3>
-          <div className="flex gap-4 flex-wrap items-center">
+          <h3 className="mb-2 text-sm text-gray-500">Use Cases</h3>
+          <div className="flex flex-wrap items-center gap-4">
             <Badge variant="success">入室中</Badge>
             <Badge variant="error">通話中</Badge>
             <Badge variant="warning">離席中</Badge>
@@ -184,19 +182,13 @@ export default function Home() {
 
       {/* Toast */}
       <section className="mb-12">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Toast</h2>
+        <h2 className="mb-4 text-lg font-semibold text-gray-700">Toast</h2>
 
-        <div className="flex gap-2 flex-wrap">
-          <Button
-            variant="secondary"
-            onClick={() => toast.success("成功", "操作が完了しました")}
-          >
+        <div className="flex flex-wrap gap-2">
+          <Button variant="secondary" onClick={() => toast.success("成功", "操作が完了しました")}>
             Success
           </Button>
-          <Button
-            variant="secondary"
-            onClick={() => toast.error("エラー", "問題が発生しました")}
-          >
+          <Button variant="secondary" onClick={() => toast.error("エラー", "問題が発生しました")}>
             Error
           </Button>
           <Button

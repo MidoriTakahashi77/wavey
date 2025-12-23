@@ -13,13 +13,10 @@ type RoomMemberProps = {
 
 export function RoomMember({ name, status, statusEmoji, onClick }: RoomMemberProps) {
   return (
-    <button
-      onClick={onClick}
-      className="flex flex-col items-center gap-1 group cursor-pointer"
-    >
+    <button onClick={onClick} className="group flex cursor-pointer flex-col items-center gap-1">
       <div className="relative">
         {statusEmoji && (
-          <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white rounded-lg px-1.5 py-0.5 shadow-sm border text-sm z-10">
+          <div className="absolute -top-6 left-1/2 z-10 -translate-x-1/2 rounded-lg border bg-white px-1.5 py-0.5 text-sm shadow-sm">
             {statusEmoji}
           </div>
         )}
@@ -27,7 +24,7 @@ export function RoomMember({ name, status, statusEmoji, onClick }: RoomMemberPro
           <Avatar size="md" status={status} />
         </div>
       </div>
-      <div className="bg-gray-800/80 text-white text-xs px-2 py-0.5 rounded-full max-w-[80px] truncate">
+      <div className="max-w-[80px] truncate rounded-full bg-gray-800/80 px-2 py-0.5 text-xs text-white">
         {name}
       </div>
     </button>

@@ -9,11 +9,7 @@ type CreateWorkspaceModalProps = {
   onCreated?: (name: string) => void;
 };
 
-export function CreateWorkspaceModal({
-  open,
-  onOpenChange,
-  onCreated,
-}: CreateWorkspaceModalProps) {
+export function CreateWorkspaceModal({ open, onOpenChange, onCreated }: CreateWorkspaceModalProps) {
   const [name, setName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,19 +42,11 @@ export function CreateWorkspaceModal({
           onChange={(e) => setName(e.target.value)}
           required
         />
-        <div className="flex gap-2 justify-end">
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={() => onOpenChange(false)}
-          >
+        <div className="flex justify-end gap-2">
+          <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
             キャンセル
           </Button>
-          <Button
-            type="submit"
-            loading={isSubmitting}
-            disabled={!name.trim() || isSubmitting}
-          >
+          <Button type="submit" loading={isSubmitting} disabled={!name.trim() || isSubmitting}>
             作成
           </Button>
         </div>

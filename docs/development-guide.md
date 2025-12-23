@@ -35,15 +35,15 @@ open http://localhost:3000
 
 ## コマンド一覧
 
-| コマンド | 説明 |
-|----------|------|
-| `pnpm dev` | 開発サーバー起動 |
-| `pnpm build` | プロダクションビルド |
-| `pnpm start` | プロダクションサーバー起動 |
-| `pnpm lint` | ESLint実行 |
-| `pnpm test` | E2Eテスト実行 |
-| `pnpm test:ui` | E2Eテスト（UIモード） |
-| `pnpm test:headed` | E2Eテスト（ブラウザ表示） |
+| コマンド           | 説明                       |
+| ------------------ | -------------------------- |
+| `pnpm dev`         | 開発サーバー起動           |
+| `pnpm build`       | プロダクションビルド       |
+| `pnpm start`       | プロダクションサーバー起動 |
+| `pnpm lint`        | ESLint実行                 |
+| `pnpm test`        | E2Eテスト実行              |
+| `pnpm test:ui`     | E2Eテスト（UIモード）      |
+| `pnpm test:headed` | E2Eテスト（ブラウザ表示）  |
 
 ---
 
@@ -59,27 +59,27 @@ open http://localhost:3000
 
 ### 絵文字一覧（gitmoji）
 
-| 絵文字 | コード | type | 説明 |
-|--------|--------|------|------|
-| ✨ | `:sparkles:` | feat | 新機能 |
-| 🐛 | `:bug:` | fix | バグ修正 |
-| 📝 | `:memo:` | docs | ドキュメント |
-| 💄 | `:lipstick:` | style | UI/スタイル変更 |
-| ♻️ | `:recycle:` | refactor | リファクタリング |
-| ✅ | `:white_check_mark:` | test | テスト追加・修正 |
-| ⚙️ | `:gear:` | chore | 設定・ツール変更 |
-| 📦 | `:package:` | build | ビルド・依存関係 |
-| 🔥 | `:fire:` | remove | コード・ファイル削除 |
-| 🚀 | `:rocket:` | perf | パフォーマンス改善 |
-| 🔒 | `:lock:` | security | セキュリティ修正 |
-| 🎨 | `:art:` | art | コード構造改善 |
-| 🚧 | `:construction:` | wip | 作業中 |
-| ⬆️ | `:arrow_up:` | deps | 依存関係アップグレード |
-| 🔧 | `:wrench:` | config | 設定ファイル変更 |
-| 🌐 | `:globe_with_meridians:` | i18n | 国際化 |
-| ♿ | `:wheelchair:` | a11y | アクセシビリティ |
-| 🗃️ | `:card_file_box:` | db | データベース関連 |
-| 🏗️ | `:building_construction:` | arch | アーキテクチャ変更 |
+| 絵文字 | コード                    | type     | 説明                   |
+| ------ | ------------------------- | -------- | ---------------------- |
+| ✨     | `:sparkles:`              | feat     | 新機能                 |
+| 🐛     | `:bug:`                   | fix      | バグ修正               |
+| 📝     | `:memo:`                  | docs     | ドキュメント           |
+| 💄     | `:lipstick:`              | style    | UI/スタイル変更        |
+| ♻️     | `:recycle:`               | refactor | リファクタリング       |
+| ✅     | `:white_check_mark:`      | test     | テスト追加・修正       |
+| ⚙️     | `:gear:`                  | chore    | 設定・ツール変更       |
+| 📦     | `:package:`               | build    | ビルド・依存関係       |
+| 🔥     | `:fire:`                  | remove   | コード・ファイル削除   |
+| 🚀     | `:rocket:`                | perf     | パフォーマンス改善     |
+| 🔒     | `:lock:`                  | security | セキュリティ修正       |
+| 🎨     | `:art:`                   | art      | コード構造改善         |
+| 🚧     | `:construction:`          | wip      | 作業中                 |
+| ⬆️     | `:arrow_up:`              | deps     | 依存関係アップグレード |
+| 🔧     | `:wrench:`                | config   | 設定ファイル変更       |
+| 🌐     | `:globe_with_meridians:`  | i18n     | 国際化                 |
+| ♿     | `:wheelchair:`            | a11y     | アクセシビリティ       |
+| 🗃️     | `:card_file_box:`         | db       | データベース関連       |
+| 🏗️     | `:building_construction:` | arch     | アーキテクチャ変更     |
 
 ### コミット例
 
@@ -112,18 +112,18 @@ open http://localhost:3000
 
 ### type一覧（Conventional Commits）
 
-| type | 説明 |
-|------|------|
-| `feat` | 新機能 |
-| `fix` | バグ修正 |
-| `docs` | ドキュメントのみの変更 |
-| `style` | コードの意味に影響しない変更（空白、フォーマット等） |
-| `refactor` | バグ修正でも機能追加でもないコード変更 |
-| `perf` | パフォーマンス改善 |
-| `test` | テストの追加・修正 |
-| `chore` | ビルドプロセスや補助ツールの変更 |
-| `build` | ビルドシステムや外部依存関係の変更 |
-| `ci` | CI設定ファイルの変更 |
+| type       | 説明                                                 |
+| ---------- | ---------------------------------------------------- |
+| `feat`     | 新機能                                               |
+| `fix`      | バグ修正                                             |
+| `docs`     | ドキュメントのみの変更                               |
+| `style`    | コードの意味に影響しない変更（空白、フォーマット等） |
+| `refactor` | バグ修正でも機能追加でもないコード変更               |
+| `perf`     | パフォーマンス改善                                   |
+| `test`     | テストの追加・修正                                   |
+| `chore`    | ビルドプロセスや補助ツールの変更                     |
+| `build`    | ビルドシステムや外部依存関係の変更                   |
+| `ci`       | CI設定ファイルの変更                                 |
 
 ---
 
@@ -193,14 +193,14 @@ export function MyComponent({ title, onAction }: Props) {
 
 ### 命名規則
 
-| 対象 | 規則 | 例 |
-|------|------|-----|
-| コンポーネント | PascalCase | `WaveButton.tsx` |
-| フック | camelCase + use | `useCall.ts` |
-| 型 | PascalCase | `CallState` |
-| 定数 | SCREAMING_SNAKE_CASE | `MOCK_USERS` |
-| 関数 | camelCase | `handleClick` |
-| CSS クラス | kebab-case（Tailwind） | `bg-gray-100` |
+| 対象           | 規則                   | 例               |
+| -------------- | ---------------------- | ---------------- |
+| コンポーネント | PascalCase             | `WaveButton.tsx` |
+| フック         | camelCase + use        | `useCall.ts`     |
+| 型             | PascalCase             | `CallState`      |
+| 定数           | SCREAMING_SNAKE_CASE   | `MOCK_USERS`     |
+| 関数           | camelCase              | `handleClick`    |
+| CSS クラス     | kebab-case（Tailwind） | `bg-gray-100`    |
 
 ### インポート順序
 

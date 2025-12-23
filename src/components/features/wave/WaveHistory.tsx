@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card, Avatar } from "@/components/ui";
 import { HiOutlineClock } from "react-icons/hi";
 
@@ -29,6 +30,22 @@ function formatTime(date: Date): string {
   return date.toLocaleDateString("ja-JP", { month: "short", day: "numeric" });
 }
 
+function TimeDisplay({ date }: { date: Date }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // ハイドレーションミスマッチを防ぐための標準パターン
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <span className="text-xs text-gray-400">--</span>;
+  }
+
+  return <span className="text-xs text-gray-400">{formatTime(date)}</span>;
+}
+
 const resultLabels: Record<WaveRecord["result"], { text: string; color: string }> = {
   accepted: { text: "通話開始", color: "text-green-600" },
   declined: { text: "またの機会に", color: "text-gray-500" },
@@ -39,7 +56,7 @@ export function WaveHistory({ waves }: WaveHistoryProps) {
   if (waves.length === 0) {
     return (
       <Card className="p-6 text-center">
-        <HiOutlineClock className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+        <HiOutlineClock className="mx-auto mb-2 h-8 w-8 text-gray-300" />
         <p className="text-sm text-gray-500">まだwaveの履歴がありません</p>
       </Card>
     );
@@ -47,16 +64,14 @@ export function WaveHistory({ waves }: WaveHistoryProps) {
 
   return (
     <Card className="p-2">
-      <h3 className="text-xs font-medium text-gray-500 uppercase px-3 py-2">
-        Wave履歴
-      </h3>
+      <h3 className="px-3 py-2 text-xs font-medium text-gray-500 uppercase">Wave履歴</h3>
       <div className="space-y-1">
         {waves.map((wave) => {
           const { text, color } = resultLabels[wave.result];
           return (
             <div
               key={wave.id}
-              className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50"
+              className="flex items-center justify-between rounded-lg p-3 hover:bg-gray-50"
             >
               <div className="flex items-center gap-3">
                 <Avatar size="sm" />
@@ -69,9 +84,7 @@ export function WaveHistory({ waves }: WaveHistoryProps) {
                   <p className={`text-xs ${color}`}>{text}</p>
                 </div>
               </div>
-              <span className="text-xs text-gray-400">
-                {formatTime(wave.timestamp)}
-              </span>
+              <TimeDisplay date={wave.timestamp} />
             </div>
           );
         })}

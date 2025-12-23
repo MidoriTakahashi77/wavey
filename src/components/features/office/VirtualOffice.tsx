@@ -25,7 +25,7 @@ type VirtualOfficeProps = {
 
 export function VirtualOffice({ rooms, members, onMemberClick }: VirtualOfficeProps) {
   return (
-    <div className="bg-gray-100 rounded-xl p-6 border-2 border-gray-200">
+    <div className="rounded-xl border-2 border-gray-200 bg-gray-100 p-6">
       {/* 背景パターン */}
       <div
         className="relative"
@@ -35,13 +35,13 @@ export function VirtualOffice({ rooms, members, onMemberClick }: VirtualOfficePr
         }}
       >
         {/* ルーム配置 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {rooms.map((room) => {
             const roomMembers = members.filter((m) => m.roomId === room.id);
             return (
               <Room key={room.id} name={room.name} color={room.color}>
                 {roomMembers.length === 0 ? (
-                  <div className="text-gray-400 text-sm">空室</div>
+                  <div className="text-sm text-gray-400">空室</div>
                 ) : (
                   roomMembers.map((member) => (
                     <RoomMember

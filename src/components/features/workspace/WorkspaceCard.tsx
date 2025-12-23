@@ -11,20 +11,13 @@ type WorkspaceCardProps = {
   onlineCount: number;
 };
 
-export function WorkspaceCard({
-  id,
-  name,
-  memberCount,
-  onlineCount,
-}: WorkspaceCardProps) {
+export function WorkspaceCard({ id, name, memberCount, onlineCount }: WorkspaceCardProps) {
   return (
     <Link href={`/workspaces/${id}`}>
       <Card clickable className="p-4">
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="font-bold text-gray-900 truncate">{name}</h3>
-          {onlineCount > 0 && (
-            <Badge variant="success">{onlineCount}人オンライン</Badge>
-          )}
+        <div className="mb-3 flex items-start justify-between">
+          <h3 className="truncate font-bold text-gray-900">{name}</h3>
+          {onlineCount > 0 && <Badge variant="success">{onlineCount}人オンライン</Badge>}
         </div>
 
         <div className="flex items-center justify-between">
@@ -33,14 +26,14 @@ export function WorkspaceCard({
               <Avatar key={i} size="sm" className="border-2 border-white" />
             ))}
             {memberCount > 3 && (
-              <div className="w-8 h-8 rounded-md bg-gray-200 border-2 border-white flex items-center justify-center text-xs text-gray-600">
+              <div className="flex h-8 w-8 items-center justify-center rounded-md border-2 border-white bg-gray-200 text-xs text-gray-600">
                 +{memberCount - 3}
               </div>
             )}
           </div>
 
           <div className="flex items-center gap-1 text-sm text-gray-500">
-            <HiUsers className="w-4 h-4" />
+            <HiUsers className="h-4 w-4" />
             <span>{memberCount}</span>
           </div>
         </div>

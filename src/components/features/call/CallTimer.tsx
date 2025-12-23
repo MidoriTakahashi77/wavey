@@ -12,9 +12,5 @@ function formatDuration(seconds: number): string {
 }
 
 export function CallTimer({ duration, className = "" }: CallTimerProps) {
-  return (
-    <div className={`font-mono text-lg ${className}`}>
-      {formatDuration(duration)}
-    </div>
-  );
+  return <div className={`font-mono text-lg ${className}`}>{formatDuration(duration)}</div>;
 }

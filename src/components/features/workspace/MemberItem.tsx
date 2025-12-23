@@ -14,7 +14,10 @@ type MemberItemProps = {
   onWave?: (memberId: string) => void;
 };
 
-const statusLabels: Record<MemberStatus, { label: string; variant: "success" | "error" | "warning" | "default" }> = {
+const statusLabels: Record<
+  MemberStatus,
+  { label: string; variant: "success" | "error" | "warning" | "default" }
+> = {
   online: { label: "オンライン", variant: "success" },
   busy: { label: "通話中", variant: "error" },
   away: { label: "離席中", variant: "warning" },
@@ -32,21 +35,17 @@ export function MemberItem({
   const { label, variant } = statusLabels[status];
 
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
+    <div className="flex items-center justify-between rounded-lg p-3 transition-colors hover:bg-gray-50">
       <div className="flex items-center gap-3">
         <Avatar status={status} />
         <div>
           <div className="flex items-center gap-2">
             <span className="font-medium text-gray-900">{name}</span>
-            {isMe && (
-              <span className="text-xs text-gray-400">(自分)</span>
-            )}
+            {isMe && <span className="text-xs text-gray-400">(自分)</span>}
           </div>
-          <div className="flex items-center gap-2 mt-0.5">
+          <div className="mt-0.5 flex items-center gap-2">
             <Badge variant={variant}>{label}</Badge>
-            {statusMessage && (
-              <span className="text-xs text-gray-500">{statusMessage}</span>
-            )}
+            {statusMessage && <span className="text-xs text-gray-500">{statusMessage}</span>}
           </div>
         </div>
       </div>

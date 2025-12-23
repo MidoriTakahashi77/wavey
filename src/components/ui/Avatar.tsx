@@ -43,20 +43,20 @@ export function Avatar({
   return (
     <div className={`relative inline-block ${className}`} {...props}>
       <div
-        className={`${container} rounded-md overflow-hidden bg-gray-200 flex items-center justify-center`}
+        className={`${container} flex items-center justify-center overflow-hidden rounded-md bg-gray-200`}
       >
         <Image
           src={src}
           alt={alt}
           width={image}
           height={image}
-          className="object-cover pixelated"
+          className="pixelated object-cover"
           style={{ imageRendering: "pixelated" }}
         />
       </div>
       {status && (
         <span
-          className={`absolute -bottom-0.5 -right-0.5 ${statusBadgeSize[size]} ${statusStyles[status]} rounded-full border-white`}
+          className={`absolute -right-0.5 -bottom-0.5 ${statusBadgeSize[size]} ${statusStyles[status]} rounded-full border-white`}
           aria-label={status}
         />
       )}

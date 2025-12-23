@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button, Modal, useToast } from "@/components/ui";
 import { VirtualOffice } from "@/components/features/office";
-import { WaveButton } from "@/components/features/wave/WaveButton";
 import { WaveHistory } from "@/components/features/wave/WaveHistory";
 import { WaveNotification } from "@/components/features/wave/WaveNotification";
 import { CallModal } from "@/components/features/call";
@@ -150,28 +149,26 @@ export default function WorkspacePage() {
   const selectedMemberData = MOCK_MEMBERS.find((m) => m.id === selectedMember);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="mx-auto max-w-5xl p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link href="/">
             <Button variant="ghost" size="sm">
-              <HiArrowLeft className="w-4 h-4" />
+              <HiArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <h1 className="text-xl font-bold text-gray-900">
-            {MOCK_WORKSPACE.name}
-          </h1>
+          <h1 className="text-xl font-bold text-gray-900">{MOCK_WORKSPACE.name}</h1>
         </div>
         <div className="flex items-center gap-2">
           {/* デモ用：Wave受信シミュレート */}
           <Button variant="secondary" size="sm" onClick={simulateIncomingWave}>
-            <HiBell className="w-4 h-4 mr-1" />
+            <HiBell className="mr-1 h-4 w-4" />
             Wave受信デモ
           </Button>
           <Link href={`/workspaces/${MOCK_WORKSPACE.id}/settings`}>
             <Button variant="ghost" size="sm">
-              <HiCog className="w-4 h-4" />
+              <HiCog className="h-4 w-4" />
             </Button>
           </Link>
         </div>
@@ -188,7 +185,7 @@ export default function WorkspacePage() {
 
       {/* Wave History */}
       <div className="max-w-md">
-        <h2 className="text-sm font-medium text-gray-500 mb-3">最近のWave</h2>
+        <h2 className="mb-3 text-sm font-medium text-gray-500">最近のWave</h2>
         <WaveHistory waves={waves} />
       </div>
 
@@ -205,7 +202,7 @@ export default function WorkspacePage() {
             onClick={handleWave}
             disabled={selectedMemberData?.status === "busy"}
           >
-            <WaveButton size="sm" disabled />
+            <span>👋</span>
             <span className="ml-2">手を振る</span>
           </Button>
           <Button
