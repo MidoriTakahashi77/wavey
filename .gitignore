@@ -9,7 +9,6 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-.tool-versions
 
 # testing
 /coverage
@@ -48,3 +47,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+.tool-versions
+memo/
+CLAUDE.md
