@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button, Modal, useToast } from "@/components/ui";
 import { VirtualOffice } from "@/components/features/office";
-import { WaveButton } from "@/components/features/wave/WaveButton";
 import { WaveHistory } from "@/components/features/wave/WaveHistory";
 import { WaveNotification } from "@/components/features/wave/WaveNotification";
 import { CallModal } from "@/components/features/call";
@@ -205,7 +204,7 @@ export default function WorkspacePage() {
             onClick={handleWave}
             disabled={selectedMemberData?.status === "busy"}
           >
-            <WaveButton size="sm" disabled />
+            <span>👋</span>
             <span className="ml-2">手を振る</span>
           </Button>
           <Button

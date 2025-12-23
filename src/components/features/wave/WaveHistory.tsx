@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card, Avatar } from "@/components/ui";
 import { HiOutlineClock } from "react-icons/hi";
 
@@ -27,6 +28,20 @@ function formatTime(date: Date): string {
   if (diffHour < 24) return `${diffHour}時間前`;
 
   return date.toLocaleDateString("ja-JP", { month: "short", day: "numeric" });
+}
+
+function TimeDisplay({ date }: { date: Date }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <span className="text-xs text-gray-400">--</span>;
+  }
+
+  return <span className="text-xs text-gray-400">{formatTime(date)}</span>;
 }
 
 const resultLabels: Record<WaveRecord["result"], { text: string; color: string }> = {
@@ -69,9 +84,7 @@ export function WaveHistory({ waves }: WaveHistoryProps) {
                   <p className={`text-xs ${color}`}>{text}</p>
                 </div>
               </div>
-              <span className="text-xs text-gray-400">
-                {formatTime(wave.timestamp)}
-              </span>
+              <TimeDisplay date={wave.timestamp} />
             </div>
           );
         })}
