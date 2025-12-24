@@ -2,7 +2,7 @@ import type { WaveRecord } from "../../db/types";
 import { AppError, ErrorCode } from "../../lib/errors";
 import { ok, err, type Result } from "../../lib/result";
 import { waveRepository } from "../../repositories/wave/wave-repository";
-import { authorizationService } from "../authorization/authorization-service";
+import { workspaceUserRepository } from "../../repositories/workspace-user/workspace-user-repository";
 
 export type SendWaveInput = {
   workspaceId: string;
@@ -22,13 +22,7 @@ export const waveService = {
       return err(new AppError(ErrorCode.CANNOT_WAVE_SELF, "You cannot wave to yourself"));
     }
 
-    const fromMemberResult = await authorizationService.requireWorkspaceMember(
-      input.workspaceId,
-      input.fromUserId
-    );
-    if (fromMemberResult.isFailure) return fromMemberResult;
-
-    const isToMember = await authorizationService.isWorkspaceMember(
+    const isToMember = await workspaceUserRepository.isMemberOfWorkspace(
       input.workspaceId,
       input.toUserId
     );
@@ -82,23 +76,12 @@ export const waveService = {
     return ok(undefined);
   },
 
-  async getReceivedWaves(
-    workspaceId: string,
-    userId: string
-  ): Promise<Result<WaveRecord[], AppError>> {
-    const authResult = await authorizationService.requireWorkspaceMember(workspaceId, userId);
-    if (authResult.isFailure) return authResult;
-
-    const waves = await waveRepository.findReceivedWavesByUserId(workspaceId, userId);
-    return ok(waves);
+  async getReceivedWaves(workspaceId: string, userId: string): Promise<WaveRecord[]> {
+    return waveRepository.findReceivedWavesByUserId(workspaceId, userId);
   },
 
-  async getSentWaves(workspaceId: string, userId: string): Promise<Result<WaveRecord[], AppError>> {
-    const authResult = await authorizationService.requireWorkspaceMember(workspaceId, userId);
-    if (authResult.isFailure) return authResult;
-
-    const waves = await waveRepository.findSentWavesByUserId(workspaceId, userId);
-    return ok(waves);
+  async getSentWaves(workspaceId: string, userId: string): Promise<WaveRecord[]> {
+    return waveRepository.findSentWavesByUserId(workspaceId, userId);
   },
 
   async getWaveById(waveId: string, userId: string): Promise<Result<WaveRecord, AppError>> {

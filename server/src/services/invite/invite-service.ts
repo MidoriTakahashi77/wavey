@@ -6,11 +6,9 @@ import { LIMITS } from "../../lib/constants";
 import { ok, err, type Result } from "../../lib/result";
 import { workspaceUserRepository } from "../../repositories/workspace-user/workspace-user-repository";
 import { inviteRepository } from "../../repositories/invite/invite-repository";
-import { authorizationService } from "../authorization/authorization-service";
 
 export type CreateInviteInput = {
   workspaceId: string;
-  requesterId: string;
   maxUses?: number | null;
 };
 
@@ -25,12 +23,6 @@ function generateInviteCode(): string {
 
 export const inviteService = {
   async createInvite(input: CreateInviteInput): Promise<Result<InviteRecord, AppError>> {
-    const authResult = await authorizationService.requireWorkspaceOwner(
-      input.workspaceId,
-      input.requesterId
-    );
-    if (authResult.isFailure) return authResult;
-
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + LIMITS.INVITE_EXPIRES_DAYS);
 
@@ -61,7 +53,10 @@ export const inviteService = {
       );
     }
 
-    const isMember = await authorizationService.isWorkspaceMember(invite.workspaceId, input.userId);
+    const isMember = await workspaceUserRepository.isMemberOfWorkspace(
+      invite.workspaceId,
+      input.userId
+    );
     if (isMember) {
       return err(
         new AppError(ErrorCode.ALREADY_MEMBER, "You are already a member of this workspace")
@@ -94,28 +89,15 @@ export const inviteService = {
     return ok(member);
   },
 
-  async getInvitesByWorkspaceId(
-    workspaceId: string,
-    requesterId: string
-  ): Promise<Result<InviteRecord[], AppError>> {
-    const authResult = await authorizationService.requireWorkspaceOwner(workspaceId, requesterId);
-    if (authResult.isFailure) return authResult;
-
-    const invites = await inviteRepository.findInvitesByWorkspaceId(workspaceId);
-    return ok(invites);
+  async getInvitesByWorkspaceId(workspaceId: string): Promise<InviteRecord[]> {
+    return inviteRepository.findInvitesByWorkspaceId(workspaceId);
   },
 
-  async deleteInvite(inviteId: string, requesterId: string): Promise<Result<void, AppError>> {
+  async deleteInvite(inviteId: string): Promise<Result<void, AppError>> {
     const invite = await inviteRepository.findInviteById(inviteId);
     if (!invite) {
       return err(new AppError(ErrorCode.NOT_FOUND, "Invite not found"));
     }
-
-    const authResult = await authorizationService.requireWorkspaceOwner(
-      invite.workspaceId,
-      requesterId
-    );
-    if (authResult.isFailure) return authResult;
 
     await inviteRepository.deleteInvite(inviteId);
     return ok(undefined);

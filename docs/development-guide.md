@@ -6,6 +6,7 @@
 - [コマンド一覧](#コマンド一覧)
 - [コミットルール](#コミットルール)
 - [ディレクトリ構成](#ディレクトリ構成)
+- [認可（Authorization）](#認可authorization)
 - [コーディング規約](#コーディング規約)
 - [テスト](#テスト)
 
@@ -212,6 +213,99 @@ src/
 ├── mocks/                  # モックデータ
 └── lib/                    # ユーティリティ
 ```
+
+---
+
+## 認可（Authorization）
+
+### 概要
+
+Wavey では [CASL](https://casl.js.org/) を使用して認可（Authorization）を管理しています。
+
+- **認証（Authentication）**: ユーザーが誰であるかを確認する（ログイン）
+- **認可（Authorization）**: ユーザーが何をできるかを確認する（権限）
+
+### ファイル構成
+
+```
+server/src/
+├── lib/
+│   └── abilities.ts              # CASL 権限定義
+└── services/
+    └── authorization/
+        └── authorization-service.ts  # 認可サービス
+```
+
+### 権限ルール
+
+| ロール | Workspace        | Member                   | Invite | Wave                             |
+| ------ | ---------------- | ------------------------ | ------ | -------------------------------- |
+| Owner  | manage（全操作） | manage                   | manage | create/read/update（自分のWave） |
+| Member | read             | read, delete（自分のみ） | -      | create/read/update（自分のWave） |
+
+### 使用方法
+
+認可チェックは**ルート（Route）**で行います。サービス層はビジネスロジックのみを担当します。
+
+#### ルートでの認可チェック
+
+```typescript
+import { authorizationService } from "../../services/authorization/authorization-service";
+
+// DELETE /api/workspaces/:id
+app.delete("/workspaces/:id", async (c) => {
+  const userId = c.get("userId");
+  const workspaceId = c.req.param("id");
+
+  // 認可チェック（ルートで実行）
+  const authResult = await authorizationService.requireWorkspaceOwner(workspaceId, userId);
+  if (authResult.isFailure) {
+    return c.json({ error: authResult.error.message }, 403);
+  }
+
+  // サービス呼び出し（ビジネスロジックのみ）
+  await workspaceService.deleteWorkspace(workspaceId);
+  return c.json({ success: true });
+});
+```
+
+#### Ability の直接使用
+
+```typescript
+import { authorizationService } from "../../services/authorization/authorization-service";
+import { subjects } from "../../lib/abilities";
+
+// より細かい権限チェックが必要な場合
+const ability = await authorizationService.buildAbility(userId, workspaceId);
+
+if (ability.can("manage", subjects.workspace({ id: workspaceId, ownerId: "..." }))) {
+  // オーナー権限あり
+}
+
+if (ability.can("read", subjects.wave({ fromUserId: userId, toUserId: "..." }))) {
+  // Wave 読み取り権限あり
+}
+```
+
+### authorizationService API
+
+| メソッド                                      | 説明                            | 戻り値                              |
+| --------------------------------------------- | ------------------------------- | ----------------------------------- |
+| `buildAbility(userId, workspaceId?)`          | CASL Ability インスタンスを構築 | `AppAbility`                        |
+| `requireWorkspaceOwner(workspaceId, userId)`  | オーナー権限を要求              | `Result<WorkspaceRecord, AppError>` |
+| `requireWorkspaceMember(workspaceId, userId)` | メンバー権限を要求              | `Result<void, AppError>`            |
+| `requireInviteManager(workspaceId, userId)`   | 招待管理権限を要求              | `Result<void, AppError>`            |
+| `isWorkspaceOwner(workspaceId, userId)`       | オーナーかどうか                | `boolean`                           |
+| `isWorkspaceMember(workspaceId, userId)`      | メンバーかどうか                | `boolean`                           |
+
+### エラーコード
+
+| コード                 | 説明                       |
+| ---------------------- | -------------------------- |
+| `NOT_FOUND`            | ワークスペースが存在しない |
+| `NOT_WORKSPACE_OWNER`  | オーナー権限が必要         |
+| `NOT_WORKSPACE_MEMBER` | メンバー権限が必要         |
+| `FORBIDDEN`            | 操作が許可されていない     |
 
 ---
 
