@@ -4,7 +4,6 @@ import {
   type MongoAbility,
   type InferSubjects,
 } from "@casl/ability";
-import type { WorkspaceRecord, WorkspaceUserRecord, InviteRecord, WaveRecord } from "../db/types";
 
 // Define action types
 type Actions = "manage" | "create" | "read" | "update" | "delete";
@@ -59,7 +58,7 @@ export type WorkspaceContext = {
 };
 
 export function defineAbilitiesFor(user: UserContext, workspace?: WorkspaceContext): AppAbility {
-  const { can, cannot, build } = new AbilityBuilder<AppAbility>(createMongoAbility);
+  const { can, build } = new AbilityBuilder<AppAbility>(createMongoAbility);
 
   // Workspace abilities
   if (workspace) {
