@@ -24,6 +24,9 @@
 # 依存関係のインストール
 pnpm install
 
+# Git hooks のセットアップ（初回のみ）
+pnpm exec husky
+
 # 開発サーバー起動
 pnpm dev
 
@@ -31,19 +34,68 @@ pnpm dev
 open http://localhost:3000
 ```
 
+### 開発サーバー
+
+| URL                            | 説明           |
+| ------------------------------ | -------------- |
+| http://localhost:3000          | フロントエンド |
+| http://localhost:3000/api      | API            |
+| http://localhost:3000/api/docs | Swagger UI     |
+
 ---
 
 ## コマンド一覧
 
-| コマンド           | 説明                       |
-| ------------------ | -------------------------- |
-| `pnpm dev`         | 開発サーバー起動           |
-| `pnpm build`       | プロダクションビルド       |
-| `pnpm start`       | プロダクションサーバー起動 |
-| `pnpm lint`        | ESLint実行                 |
-| `pnpm test`        | E2Eテスト実行              |
-| `pnpm test:ui`     | E2Eテスト（UIモード）      |
-| `pnpm test:headed` | E2Eテスト（ブラウザ表示）  |
+| コマンド            | 説明                       |
+| ------------------- | -------------------------- |
+| `pnpm dev`          | 開発サーバー起動           |
+| `pnpm build`        | プロダクションビルド       |
+| `pnpm start`        | プロダクションサーバー起動 |
+| `pnpm lint`         | ESLint実行                 |
+| `pnpm lint:fix`     | ESLint自動修正             |
+| `pnpm format`       | Prettierで全ファイル整形   |
+| `pnpm format:check` | フォーマットチェック       |
+| `pnpm test`         | E2Eテスト実行              |
+| `pnpm test:ui`      | E2Eテスト（UIモード）      |
+| `pnpm test:headed`  | E2Eテスト（ブラウザ表示）  |
+
+### データベース（Drizzle ORM）
+
+| コマンド           | 説明                         |
+| ------------------ | ---------------------------- |
+| `pnpm db:generate` | マイグレーション生成         |
+| `pnpm db:migrate`  | マイグレーション実行         |
+| `pnpm db:push`     | スキーマを直接反映（開発用） |
+| `pnpm db:ui`       | Drizzle Studio（GUI）        |
+
+#### 開発時の使い分け
+
+```bash
+# 開発中: スキーマ変更を素早く反映（マイグレーション不要）
+pnpm db:push
+
+# 本番前: マイグレーションファイルを生成
+pnpm db:generate
+
+# 本番: マイグレーションを実行
+pnpm db:migrate
+
+# DBの中身を確認・編集
+pnpm db:ui
+```
+
+> **Note:** `db:push` は開発用です。本番環境では必ず `db:generate` → `db:migrate` を使用してください。
+
+### コミット時の自動フォーマット
+
+Husky + lint-staged により、`git commit` 時にステージされたファイルが自動整形されます。
+
+| ファイル            | 実行されるコマンド                  |
+| ------------------- | ----------------------------------- |
+| `*.{js,jsx,ts,tsx}` | `eslint --fix` + `prettier --write` |
+| `*.{json,md,css}`   | `prettier --write`                  |
+
+> **Note:** 初回は `pnpm exec husky` で Git hooks をセットアップしてください。
 
 ---
 
