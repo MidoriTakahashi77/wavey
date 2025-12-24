@@ -171,12 +171,20 @@ export type Wave = z.infer<typeof WaveSchema>;
 ```typescript
 // lib/constants.ts
 export const LIMITS = {
-  MAX_WORKSPACES_PER_USER: 1,
   MAX_MEMBERS_PER_WORKSPACE: 5,
   INVITE_EXPIRES_DAYS: 7,
   DISPLAY_NAME_MAX_LENGTH: 20,
+  WORKSPACE_NAME_MAX_LENGTH: 50,
+  WAVE_HISTORY_LIMIT: 50,
 } as const;
 ```
+
+### ワークスペースの仕様
+
+- ユーザーは複数のワークスペースを**所有（作成）**できる
+- ユーザーは複数のワークスペースに**メンバーとして参加**できる
+- 各ワークスペースのメンバー上限は5名
+- 所有数の制限はプラン機能で後から実装予定
 
 ---
 
@@ -281,22 +289,20 @@ export const workspaceRepository: WorkspaceRepository = {
 
 ```typescript
 // services/workspace.ts
-import { workspaceRepository, workspaceUserRepository, userRepository } from "@/repositories";
-import { LIMITS } from "@/lib/constants";
-import { err, ok, type Result } from "@/lib/result";
+import { workspaceRepository, workspaceUserRepository } from "@/repositories";
+import { ok, type Result } from "@/lib/result";
 import { AppError } from "@/lib/errors";
 
 export async function createWorkspace(
   userId: string,
   input: { name: string }
 ): Promise<Result<Workspace, AppError>> {
-  // 1. 既存ワークスペース数チェック
-  const count = await userRepository.countWorkspaces(userId);
-  if (count >= LIMITS.MAX_WORKSPACES_PER_USER) {
-    return err(new AppError("WORKSPACE_LIMIT_EXCEEDED", "ワークスペースは1つまでです"));
-  }
+  // TODO: プラン機能実装時に所有数チェック追加
+  // const owned = await workspaceRepository.findByOwnerId(userId);
+  // const limit = getPlanLimit(user.plan);
+  // if (owned.length >= limit) { ... }
 
-  // 2. トランザクションで作成
+  // トランザクションで作成
   const workspace = await db.transaction(async (tx) => {
     const ws = await workspaceRepository.create({ name: input.name, ownerId: userId });
     await workspaceUserRepository.add({ workspaceId: ws.id, userId, role: "owner" });

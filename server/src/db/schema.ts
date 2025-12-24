@@ -11,6 +11,7 @@ export const users = pgTable("users", {
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
+  ownedWorkspaces: many(workspaces),
   workspaceUsers: many(workspaceUsers),
   sentWaves: many(waves, { relationName: "sentWaves" }),
   receivedWaves: many(waves, { relationName: "receivedWaves" }),
