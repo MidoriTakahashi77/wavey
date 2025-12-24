@@ -5,7 +5,7 @@ import type { DbClient } from "../../db/types";
 import type { WorkspaceRepository } from "./workspace-repository.interface";
 
 export const workspaceRepository: WorkspaceRepository = {
-  async findById(id, tx?: DbClient) {
+  async findWorkspaceById(id, tx?: DbClient) {
     const client = tx ?? db;
     const result = await client.query.workspaces.findFirst({
       where: eq(workspaces.id, id),
@@ -13,14 +13,14 @@ export const workspaceRepository: WorkspaceRepository = {
     return result ?? null;
   },
 
-  async findByOwnerId(ownerId, tx?: DbClient) {
+  async findWorkspacesByOwnerId(ownerId, tx?: DbClient) {
     const client = tx ?? db;
     return client.query.workspaces.findMany({
       where: eq(workspaces.ownerId, ownerId),
     });
   },
 
-  async findByUserId(userId, tx?: DbClient) {
+  async findWorkspacesByUserId(userId, tx?: DbClient) {
     const client = tx ?? db;
     const members = await client.query.workspaceUsers.findMany({
       where: eq(workspaceUsers.userId, userId),
@@ -29,7 +29,7 @@ export const workspaceRepository: WorkspaceRepository = {
     return members.map((m) => m.workspace);
   },
 
-  async findWithMembers(id, tx?: DbClient) {
+  async findWorkspaceWithMembers(id, tx?: DbClient) {
     const client = tx ?? db;
     const result = await client.query.workspaces.findFirst({
       where: eq(workspaces.id, id),
@@ -42,7 +42,7 @@ export const workspaceRepository: WorkspaceRepository = {
     return result ?? null;
   },
 
-  async create(data, tx?: DbClient) {
+  async createWorkspace(data, tx?: DbClient) {
     const client = tx ?? db;
     const [workspace] = await client
       .insert(workspaces)
@@ -54,12 +54,12 @@ export const workspaceRepository: WorkspaceRepository = {
     return workspace;
   },
 
-  async delete(id, tx?: DbClient) {
+  async deleteWorkspace(id, tx?: DbClient) {
     const client = tx ?? db;
     await client.delete(workspaces).where(eq(workspaces.id, id));
   },
 
-  async updateOwner(id, newOwnerId, tx?: DbClient) {
+  async updateWorkspaceOwner(id, newOwnerId, tx?: DbClient) {
     const client = tx ?? db;
     await client.update(workspaces).set({ ownerId: newOwnerId }).where(eq(workspaces.id, id));
   },

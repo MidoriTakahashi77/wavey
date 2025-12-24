@@ -6,11 +6,11 @@ import type {
 } from "../../db/types";
 
 export interface WorkspaceRepository {
-  findById(id: string, tx?: DbClient): Promise<WorkspaceRecord | null>;
-  findByOwnerId(ownerId: string, tx?: DbClient): Promise<WorkspaceRecord[]>;
-  findByUserId(userId: string, tx?: DbClient): Promise<WorkspaceRecord[]>;
-  findWithMembers(id: string, tx?: DbClient): Promise<WorkspaceWithMembersRecord | null>;
-  create(data: CreateWorkspaceData, tx?: DbClient): Promise<WorkspaceRecord>;
-  delete(id: string, tx?: DbClient): Promise<void>;
-  updateOwner(id: string, newOwnerId: string, tx?: DbClient): Promise<void>;
+  findWorkspaceById(id: string, tx?: DbClient): Promise<WorkspaceRecord | null>;
+  findWorkspacesByOwnerId(ownerId: string, tx?: DbClient): Promise<WorkspaceRecord[]>;
+  findWorkspacesByUserId(userId: string, tx?: DbClient): Promise<WorkspaceRecord[]>;
+  findWorkspaceWithMembers(id: string, tx?: DbClient): Promise<WorkspaceWithMembersRecord | null>;
+  createWorkspace(data: CreateWorkspaceData, tx?: DbClient): Promise<WorkspaceRecord>;
+  deleteWorkspace(id: string, tx?: DbClient): Promise<void>;
+  updateWorkspaceOwner(id: string, newOwnerId: string, tx?: DbClient): Promise<void>;
 }

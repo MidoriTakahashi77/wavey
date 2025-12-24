@@ -5,21 +5,21 @@ import type { DbClient } from "../../db/types";
 import type { WorkspaceUserRepository } from "./workspace-user-repository.interface";
 
 export const workspaceUserRepository: WorkspaceUserRepository = {
-  async findByWorkspaceId(workspaceId, tx?: DbClient) {
+  async findMembersByWorkspaceId(workspaceId, tx?: DbClient) {
     const client = tx ?? db;
     return client.query.workspaceUsers.findMany({
       where: eq(workspaceUsers.workspaceId, workspaceId),
     });
   },
 
-  async findByUserId(userId, tx?: DbClient) {
+  async findMembershipsByUserId(userId, tx?: DbClient) {
     const client = tx ?? db;
     return client.query.workspaceUsers.findMany({
       where: eq(workspaceUsers.userId, userId),
     });
   },
 
-  async isMember(workspaceId, userId, tx?: DbClient) {
+  async isMemberOfWorkspace(workspaceId, userId, tx?: DbClient) {
     const client = tx ?? db;
     const result = await client.query.workspaceUsers.findFirst({
       where: and(eq(workspaceUsers.workspaceId, workspaceId), eq(workspaceUsers.userId, userId)),
@@ -27,7 +27,7 @@ export const workspaceUserRepository: WorkspaceUserRepository = {
     return result !== undefined;
   },
 
-  async add(data, tx?: DbClient) {
+  async addMember(data, tx?: DbClient) {
     const client = tx ?? db;
     const [member] = await client
       .insert(workspaceUsers)
@@ -40,14 +40,14 @@ export const workspaceUserRepository: WorkspaceUserRepository = {
     return member;
   },
 
-  async remove(workspaceId, userId, tx?: DbClient) {
+  async removeMember(workspaceId, userId, tx?: DbClient) {
     const client = tx ?? db;
     await client
       .delete(workspaceUsers)
       .where(and(eq(workspaceUsers.workspaceId, workspaceId), eq(workspaceUsers.userId, userId)));
   },
 
-  async updateRole(workspaceId, userId, role, tx?: DbClient) {
+  async updateMemberRole(workspaceId, userId, role, tx?: DbClient) {
     const client = tx ?? db;
     await client
       .update(workspaceUsers)
@@ -55,7 +55,7 @@ export const workspaceUserRepository: WorkspaceUserRepository = {
       .where(and(eq(workspaceUsers.workspaceId, workspaceId), eq(workspaceUsers.userId, userId)));
   },
 
-  async countByWorkspaceId(workspaceId, tx?: DbClient) {
+  async countMembersByWorkspaceId(workspaceId, tx?: DbClient) {
     const client = tx ?? db;
     const result = await client.query.workspaceUsers.findMany({
       where: eq(workspaceUsers.workspaceId, workspaceId),

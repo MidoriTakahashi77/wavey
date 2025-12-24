@@ -5,7 +5,7 @@ import type { DbClient } from "../../db/types";
 import type { UserRepository } from "./user-repository.interface";
 
 export const userRepository: UserRepository = {
-  async findById(id, tx?: DbClient) {
+  async findUserById(id, tx?: DbClient) {
     const client = tx ?? db;
     const result = await client.query.users.findFirst({
       where: eq(users.id, id),
@@ -13,7 +13,7 @@ export const userRepository: UserRepository = {
     return result ?? null;
   },
 
-  async findByEmail(email, tx?: DbClient) {
+  async findUserByEmail(email, tx?: DbClient) {
     const client = tx ?? db;
     const result = await client.query.users.findFirst({
       where: eq(users.email, email),
@@ -21,7 +21,7 @@ export const userRepository: UserRepository = {
     return result ?? null;
   },
 
-  async create(data, tx?: DbClient) {
+  async createUser(data, tx?: DbClient) {
     const client = tx ?? db;
     const [user] = await client
       .insert(users)
@@ -34,7 +34,7 @@ export const userRepository: UserRepository = {
     return user;
   },
 
-  async update(id, data, tx?: DbClient) {
+  async updateUser(id, data, tx?: DbClient) {
     const client = tx ?? db;
     const [user] = await client
       .update(users)
