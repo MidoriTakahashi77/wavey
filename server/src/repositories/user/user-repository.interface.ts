@@ -1,8 +1,8 @@
-import type { UserRecord, CreateUserData, UpdateUserData } from "../../db/types";
+import type { UserRecord, CreateUserData, UpdateUserData, DbClient } from "../../db/types";
 
 export interface UserRepository {
-  findById(id: string): Promise<UserRecord | null>;
-  findByEmail(email: string): Promise<UserRecord | null>;
-  create(data: CreateUserData): Promise<UserRecord>;
-  update(id: string, data: UpdateUserData): Promise<UserRecord>;
+  findById(id: string, tx?: DbClient): Promise<UserRecord | null>;
+  findByEmail(email: string, tx?: DbClient): Promise<UserRecord | null>;
+  create(data: CreateUserData, tx?: DbClient): Promise<UserRecord>;
+  update(id: string, data: UpdateUserData, tx?: DbClient): Promise<UserRecord>;
 }

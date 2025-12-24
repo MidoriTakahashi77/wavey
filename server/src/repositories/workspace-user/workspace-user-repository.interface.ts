@@ -1,12 +1,12 @@
-import type { WorkspaceUserRecord, AddWorkspaceUserData } from "../../db/types";
+import type { WorkspaceUserRecord, AddWorkspaceUserData, DbClient } from "../../db/types";
 import type { MemberRole } from "../../schemas/workspace";
 
 export interface WorkspaceUserRepository {
-  findByWorkspaceId(workspaceId: string): Promise<WorkspaceUserRecord[]>;
-  findByUserId(userId: string): Promise<WorkspaceUserRecord[]>;
-  isMember(workspaceId: string, userId: string): Promise<boolean>;
-  add(data: AddWorkspaceUserData): Promise<WorkspaceUserRecord>;
-  remove(workspaceId: string, userId: string): Promise<void>;
-  updateRole(workspaceId: string, userId: string, role: MemberRole): Promise<void>;
-  countByWorkspaceId(workspaceId: string): Promise<number>;
+  findByWorkspaceId(workspaceId: string, tx?: DbClient): Promise<WorkspaceUserRecord[]>;
+  findByUserId(userId: string, tx?: DbClient): Promise<WorkspaceUserRecord[]>;
+  isMember(workspaceId: string, userId: string, tx?: DbClient): Promise<boolean>;
+  add(data: AddWorkspaceUserData, tx?: DbClient): Promise<WorkspaceUserRecord>;
+  remove(workspaceId: string, userId: string, tx?: DbClient): Promise<void>;
+  updateRole(workspaceId: string, userId: string, role: MemberRole, tx?: DbClient): Promise<void>;
+  countByWorkspaceId(workspaceId: string, tx?: DbClient): Promise<number>;
 }

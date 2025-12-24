@@ -1,5 +1,9 @@
 import type { InferSelectModel, InferInsertModel } from "drizzle-orm";
 import { users, workspaces, workspaceUsers, workspaceInvites, waves } from "./schema";
+import type { Database, Transaction } from "./client";
+
+// Database client (can be db or transaction)
+export type DbClient = Database | Transaction;
 
 // User
 export type UserRecord = InferSelectModel<typeof users>;

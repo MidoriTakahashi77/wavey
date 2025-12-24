@@ -1,25 +1,29 @@
 import { eq } from "drizzle-orm";
 import { db } from "../../db/client";
 import { users } from "../../db/schema";
+import type { DbClient } from "../../db/types";
 import type { UserRepository } from "./user-repository.interface";
 
 export const userRepository: UserRepository = {
-  async findById(id) {
-    const result = await db.query.users.findFirst({
+  async findById(id, tx?: DbClient) {
+    const client = tx ?? db;
+    const result = await client.query.users.findFirst({
       where: eq(users.id, id),
     });
     return result ?? null;
   },
 
-  async findByEmail(email) {
-    const result = await db.query.users.findFirst({
+  async findByEmail(email, tx?: DbClient) {
+    const client = tx ?? db;
+    const result = await client.query.users.findFirst({
       where: eq(users.email, email),
     });
     return result ?? null;
   },
 
-  async create(data) {
-    const [user] = await db
+  async create(data, tx?: DbClient) {
+    const client = tx ?? db;
+    const [user] = await client
       .insert(users)
       .values({
         id: data.id,
@@ -30,8 +34,9 @@ export const userRepository: UserRepository = {
     return user;
   },
 
-  async update(id, data) {
-    const [user] = await db
+  async update(id, data, tx?: DbClient) {
+    const client = tx ?? db;
+    const [user] = await client
       .update(users)
       .set({
         ...data,
