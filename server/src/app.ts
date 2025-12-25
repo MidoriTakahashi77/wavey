@@ -223,21 +223,17 @@ export function createApp() {
     const authUser = c.get("user");
     const { workspaceId, userId } = c.req.valid("param");
 
-    // Get workspace to check ownership
-    const workspace = await workspaceRepository.findWorkspaceById(workspaceId);
-    if (!workspace) {
-      throw new AppError(ErrorCode.NOT_FOUND, "Workspace not found");
+    // Authorization check
+    const authResult = await authorizationService.requireCanRemoveMember(
+      workspaceId,
+      authUser.id,
+      userId
+    );
+    if (authResult.isFailure) {
+      throw authResult.error;
     }
 
-    // Authorization: owner can remove anyone, members can only remove themselves
-    const isOwner = workspace.ownerId === authUser.id;
-    const isSelf = userId === authUser.id;
-
-    if (!isOwner && !isSelf) {
-      throw new AppError(ErrorCode.FORBIDDEN, "Only the owner can remove other members");
-    }
-
-    const result = await workspaceService.removeMember(workspaceId, userId, workspace.ownerId);
+    const result = await workspaceService.removeMember(workspaceId, userId);
     if (result.isFailure) {
       throw result.error;
     }

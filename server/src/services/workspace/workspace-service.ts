@@ -5,6 +5,8 @@ import { ok, err, type Result } from "../../lib/result";
 import { workspaceRepository } from "../../repositories/workspace/workspace-repository";
 import { workspaceUserRepository } from "../../repositories/workspace-user/workspace-user-repository";
 
+// Note: Authorization checks are performed in route handlers using authorizationService
+
 export type CreateWorkspaceInput = {
   name: string;
   ownerId: string;
@@ -85,17 +87,7 @@ export const workspaceService = {
     return workspaceRepository.findWorkspacesByUserId(userId);
   },
 
-  async removeMember(
-    workspaceId: string,
-    targetUserId: string,
-    workspaceOwnerId: string
-  ): Promise<Result<void, AppError>> {
-    if (targetUserId === workspaceOwnerId) {
-      return err(
-        new AppError(ErrorCode.FORBIDDEN, "Owner cannot be removed. Transfer ownership first.")
-      );
-    }
-
+  async removeMember(workspaceId: string, targetUserId: string): Promise<Result<void, AppError>> {
     await workspaceUserRepository.removeMember(workspaceId, targetUserId);
     return ok(undefined);
   },
