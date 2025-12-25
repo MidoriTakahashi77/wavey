@@ -1,5 +1,7 @@
 import type { Context, Next } from "hono";
 import { AppError, ErrorCode } from "../lib/errors";
+import { getSupabaseAdmin } from "../lib/supabase";
+import { userRepository } from "../repositories/user/user-repository";
 
 export type AuthUser = {
   id: string;
@@ -12,10 +14,9 @@ type Variables = {
 
 /**
  * Authentication middleware
- * Extracts and verifies JWT from Authorization header
+ * Verifies JWT from Authorization header using Supabase Auth
+ * Syncs user to database on first login
  * Sets user in context for downstream handlers
- *
- * Note: Full Supabase Auth integration will be added in Issue #30
  */
 export async function authMiddleware(
   c: Context<{ Variables: Variables }>,
@@ -33,34 +34,50 @@ export async function authMiddleware(
     throw new AppError(ErrorCode.UNAUTHORIZED, "Missing token");
   }
 
-  // TODO: Verify JWT with Supabase Auth (Issue #30)
-  // For now, extract user ID from token (mock implementation)
-  const user = await verifyToken(token);
+  // Verify JWT with Supabase Auth
+  const {
+    data: { user: supabaseUser },
+    error,
+  } = await getSupabaseAdmin().auth.getUser(token);
 
-  if (!user) {
-    throw new AppError(ErrorCode.UNAUTHORIZED, "Invalid token");
+  if (error || !supabaseUser) {
+    throw new AppError(ErrorCode.UNAUTHORIZED, "Invalid or expired token");
   }
+
+  if (!supabaseUser.email) {
+    throw new AppError(ErrorCode.UNAUTHORIZED, "User email is required");
+  }
+
+  // Sync user to database on first login
+  const user = await syncUser(supabaseUser.id, supabaseUser.email);
 
   c.set("user", user);
   await next();
 }
 
 /**
- * Verify JWT token and extract user info
- * TODO: Replace with Supabase Auth verification in Issue #30
+ * Sync Supabase user to our users table
+ * Creates user if not exists, returns existing user otherwise
  */
-async function verifyToken(token: string): Promise<AuthUser | null> {
-  // Mock implementation: expect token format "user_<id>_<email>"
-  // This will be replaced with Supabase JWT verification
-  if (token.startsWith("user_")) {
-    const parts = token.split("_");
-    if (parts.length >= 3) {
-      return {
-        id: parts[1],
-        email: parts.slice(2).join("_"),
-      };
-    }
+async function syncUser(id: string, email: string): Promise<AuthUser> {
+  const existingUser = await userRepository.findUserById(id);
+
+  if (existingUser) {
+    return {
+      id: existingUser.id,
+      email: existingUser.email,
+    };
   }
 
-  return null;
+  // First login - create user in our database
+  const newUser = await userRepository.createUser({
+    id,
+    email,
+    displayName: email.split("@")[0], // Default display name from email
+  });
+
+  return {
+    id: newUser.id,
+    email: newUser.email,
+  };
 }
