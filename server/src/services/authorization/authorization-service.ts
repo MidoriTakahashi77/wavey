@@ -117,6 +117,39 @@ export const authorizationService = {
   },
 
   /**
+   * Check if user can remove a member from workspace
+   * - Owner can remove any member (except themselves)
+   * - Member can only remove themselves (leave)
+   */
+  async requireCanRemoveMember(
+    workspaceId: string,
+    requesterId: string,
+    targetUserId: string
+  ): Promise<Result<WorkspaceRecord, AppError>> {
+    const workspace = await workspaceRepository.findWorkspaceById(workspaceId);
+
+    if (!workspace) {
+      return err(new AppError(ErrorCode.NOT_FOUND, "Workspace not found"));
+    }
+
+    // Owner cannot be removed
+    if (targetUserId === workspace.ownerId) {
+      return err(
+        new AppError(ErrorCode.FORBIDDEN, "Owner cannot be removed. Transfer ownership first.")
+      );
+    }
+
+    const isOwner = workspace.ownerId === requesterId;
+    const isSelf = targetUserId === requesterId;
+
+    if (!isOwner && !isSelf) {
+      return err(new AppError(ErrorCode.FORBIDDEN, "Only the owner can remove other members"));
+    }
+
+    return ok(workspace);
+  },
+
+  /**
    * Simple boolean checks
    */
   async isWorkspaceOwner(workspaceId: string, userId: string): Promise<boolean> {

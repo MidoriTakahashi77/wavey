@@ -7,6 +7,7 @@
 - [コミットルール](#コミットルール)
 - [ディレクトリ構成](#ディレクトリ構成)
 - [認可（Authorization）](#認可authorization)
+- [API エンドポイント](#api-エンドポイント)
 - [コーディング規約](#コーディング規約)
 - [テスト](#テスト)
 
@@ -289,23 +290,79 @@ if (ability.can("read", subjects.wave({ fromUserId: userId, toUserId: "..." })))
 
 ### authorizationService API
 
-| メソッド                                      | 説明                            | 戻り値                              |
-| --------------------------------------------- | ------------------------------- | ----------------------------------- |
-| `buildAbility(userId, workspaceId?)`          | CASL Ability インスタンスを構築 | `AppAbility`                        |
-| `requireWorkspaceOwner(workspaceId, userId)`  | オーナー権限を要求              | `Result<WorkspaceRecord, AppError>` |
-| `requireWorkspaceMember(workspaceId, userId)` | メンバー権限を要求              | `Result<void, AppError>`            |
-| `requireInviteManager(workspaceId, userId)`   | 招待管理権限を要求              | `Result<void, AppError>`            |
-| `isWorkspaceOwner(workspaceId, userId)`       | オーナーかどうか                | `boolean`                           |
-| `isWorkspaceMember(workspaceId, userId)`      | メンバーかどうか                | `boolean`                           |
+| メソッド                                                         | 説明                   | 戻り値                              |
+| ---------------------------------------------------------------- | ---------------------- | ----------------------------------- |
+| `buildAbility(userId, workspaceId?)`                             | CASL Ability を構築    | `AppAbility`                        |
+| `requireWorkspaceOwner(workspaceId, userId)`                     | オーナー権限を要求     | `Result<WorkspaceRecord, AppError>` |
+| `requireWorkspaceMember(workspaceId, userId)`                    | メンバー権限を要求     | `Result<void, AppError>`            |
+| `requireInviteManager(workspaceId, userId)`                      | 招待管理権限を要求     | `Result<void, AppError>`            |
+| `requireCanRemoveMember(workspaceId, requesterId, targetUserId)` | メンバー削除権限を要求 | `Result<WorkspaceRecord, AppError>` |
+| `isWorkspaceOwner(workspaceId, userId)`                          | オーナーかどうか       | `boolean`                           |
+| `isWorkspaceMember(workspaceId, userId)`                         | メンバーかどうか       | `boolean`                           |
 
 ### エラーコード
 
-| コード                 | 説明                       |
-| ---------------------- | -------------------------- |
-| `NOT_FOUND`            | ワークスペースが存在しない |
-| `NOT_WORKSPACE_OWNER`  | オーナー権限が必要         |
-| `NOT_WORKSPACE_MEMBER` | メンバー権限が必要         |
-| `FORBIDDEN`            | 操作が許可されていない     |
+| コード                 | 説明                   |
+| ---------------------- | ---------------------- |
+| `NOT_FOUND`            | リソースが存在しない   |
+| `UNAUTHORIZED`         | 認証が必要             |
+| `FORBIDDEN`            | 操作が許可されていない |
+| `NOT_WORKSPACE_OWNER`  | オーナー権限が必要     |
+| `NOT_WORKSPACE_MEMBER` | メンバー権限が必要     |
+
+---
+
+## API エンドポイント
+
+### 認証
+
+すべてのエンドポイント（System 除く）は Bearer トークンによる認証が必要です。
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### System
+
+| メソッド | パス      | 説明           | 認可 |
+| -------- | --------- | -------------- | ---- |
+| GET      | `/`       | API 情報       | なし |
+| GET      | `/health` | ヘルスチェック | なし |
+
+### Profile
+
+| メソッド | パス       | 説明             | 認可     |
+| -------- | ---------- | ---------------- | -------- |
+| GET      | `/profile` | プロフィール取得 | 認証済み |
+| PUT      | `/profile` | プロフィール更新 | 認証済み |
+
+### Workspace
+
+| メソッド | パス                                         | 説明         | 認可                     |
+| -------- | -------------------------------------------- | ------------ | ------------------------ |
+| GET      | `/workspaces`                                | 一覧取得     | 認証済み                 |
+| POST     | `/workspaces`                                | 作成         | 認証済み                 |
+| GET      | `/workspaces/{workspaceId}`                  | 詳細取得     | `requireWorkspaceMember` |
+| DELETE   | `/workspaces/{workspaceId}`                  | 削除         | `requireWorkspaceOwner`  |
+| POST     | `/workspaces/{workspaceId}/transfer`         | オーナー譲渡 | `requireWorkspaceOwner`  |
+| DELETE   | `/workspaces/{workspaceId}/members/{userId}` | メンバー削除 | `requireCanRemoveMember` |
+
+### Invite
+
+| メソッド | パス                                | 説明         | 認可                    |
+| -------- | ----------------------------------- | ------------ | ----------------------- |
+| POST     | `/workspaces/{workspaceId}/invites` | 招待作成     | `requireWorkspaceOwner` |
+| GET      | `/workspaces/{workspaceId}/invites` | 招待一覧     | `requireWorkspaceOwner` |
+| POST     | `/invites/{code}/accept`            | 招待受け入れ | 認証済み                |
+| DELETE   | `/invites/{id}`                     | 招待削除     | `requireWorkspaceOwner` |
+
+### Wave（未実装）
+
+| メソッド | パス          | 説明      | 認可                     |
+| -------- | ------------- | --------- | ------------------------ |
+| POST     | `/waves`      | Wave 送信 | `requireWorkspaceMember` |
+| GET      | `/waves`      | Wave 履歴 | `requireWorkspaceMember` |
+| PUT      | `/waves/{id}` | Wave 応答 | Wave 受信者のみ          |
 
 ---
 
