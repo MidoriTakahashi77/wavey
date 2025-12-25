@@ -15,6 +15,10 @@ import {
   listInvitesRoute,
   acceptInviteRoute,
   deleteInviteRoute,
+  sendWaveRoute,
+  listWavesRoute,
+  respondWaveRoute,
+  getWaveRoute,
 } from "./routes";
 import { authMiddleware, type AuthUser } from "./middleware/auth";
 import { errorHandler } from "./middleware/error-handler";
@@ -24,6 +28,7 @@ import { inviteRepository } from "./repositories/invite/invite-repository";
 import { AppError, ErrorCode } from "./lib/errors";
 import { workspaceService } from "./services/workspace/workspace-service";
 import { inviteService } from "./services/invite/invite-service";
+import { waveService } from "./services/wave/wave-service";
 import { authorizationService } from "./services/authorization/authorization-service";
 
 type Variables = {
@@ -54,6 +59,8 @@ export function createApp() {
   app.use("/workspaces/*", authMiddleware);
   app.use("/workspaces", authMiddleware);
   app.use("/invites/*", authMiddleware);
+  app.use("/waves/*", authMiddleware);
+  app.use("/waves", authMiddleware);
 
   // Profile routes
   app.openapi(getProfileRoute, async (c) => {
@@ -354,6 +361,123 @@ export function createApp() {
     }
 
     return c.body(null, 204);
+  });
+
+  // Wave routes
+  app.openapi(sendWaveRoute, async (c) => {
+    const authUser = c.get("user");
+    const body = c.req.valid("json");
+
+    // Authorization check
+    const authResult = await authorizationService.requireWorkspaceMember(
+      body.workspaceId,
+      authUser.id
+    );
+    if (authResult.isFailure) {
+      throw authResult.error;
+    }
+
+    const result = await waveService.sendWave({
+      workspaceId: body.workspaceId,
+      fromUserId: authUser.id,
+      toUserId: body.toUserId,
+    });
+
+    if (result.isFailure) {
+      throw result.error;
+    }
+
+    const wave = result.value;
+    return c.json(
+      {
+        id: wave.id,
+        workspaceId: wave.workspaceId,
+        fromUserId: wave.fromUserId,
+        toUserId: wave.toUserId,
+        status: wave.status,
+        createdAt: wave.createdAt.toISOString(),
+        respondedAt: wave.respondedAt?.toISOString() ?? null,
+      },
+      201
+    );
+  });
+
+  app.openapi(listWavesRoute, async (c) => {
+    const authUser = c.get("user");
+    const { workspaceId, type } = c.req.valid("query");
+
+    // Authorization check
+    const authResult = await authorizationService.requireWorkspaceMember(workspaceId, authUser.id);
+    if (authResult.isFailure) {
+      throw authResult.error;
+    }
+
+    let waves;
+    if (type === "sent") {
+      waves = await waveService.getSentWaves(workspaceId, authUser.id);
+    } else if (type === "received") {
+      waves = await waveService.getReceivedWaves(workspaceId, authUser.id);
+    } else {
+      const sent = await waveService.getSentWaves(workspaceId, authUser.id);
+      const received = await waveService.getReceivedWaves(workspaceId, authUser.id);
+      waves = [...sent, ...received];
+    }
+
+    return c.json(
+      waves.map((wave) => ({
+        id: wave.id,
+        workspaceId: wave.workspaceId,
+        fromUserId: wave.fromUserId,
+        toUserId: wave.toUserId,
+        status: wave.status,
+        createdAt: wave.createdAt.toISOString(),
+        respondedAt: wave.respondedAt?.toISOString() ?? null,
+      })),
+      200
+    );
+  });
+
+  app.openapi(respondWaveRoute, async (c) => {
+    const authUser = c.get("user");
+    const { id } = c.req.valid("param");
+    const body = c.req.valid("json");
+
+    const result = await waveService.respondWave({
+      waveId: id,
+      userId: authUser.id,
+      status: body.status,
+    });
+
+    if (result.isFailure) {
+      throw result.error;
+    }
+
+    return c.body(null, 204);
+  });
+
+  app.openapi(getWaveRoute, async (c) => {
+    const authUser = c.get("user");
+    const { id } = c.req.valid("param");
+
+    const result = await waveService.getWaveById(id, authUser.id);
+
+    if (result.isFailure) {
+      throw result.error;
+    }
+
+    const wave = result.value;
+    return c.json(
+      {
+        id: wave.id,
+        workspaceId: wave.workspaceId,
+        fromUserId: wave.fromUserId,
+        toUserId: wave.toUserId,
+        status: wave.status,
+        createdAt: wave.createdAt.toISOString(),
+        respondedAt: wave.respondedAt?.toISOString() ?? null,
+      },
+      200
+    );
   });
 
   // OpenAPI spec

@@ -356,13 +356,14 @@ Authorization: Bearer <JWT_TOKEN>
 | POST     | `/invites/{code}/accept`            | 招待受け入れ | 認証済み                |
 | DELETE   | `/invites/{id}`                     | 招待削除     | `requireWorkspaceOwner` |
 
-### Wave（未実装）
+### Wave
 
-| メソッド | パス          | 説明      | 認可                     |
-| -------- | ------------- | --------- | ------------------------ |
-| POST     | `/waves`      | Wave 送信 | `requireWorkspaceMember` |
-| GET      | `/waves`      | Wave 履歴 | `requireWorkspaceMember` |
-| PUT      | `/waves/{id}` | Wave 応答 | Wave 受信者のみ          |
+| メソッド | パス          | 説明      | 認可                        |
+| -------- | ------------- | --------- | --------------------------- |
+| POST     | `/waves`      | Wave 送信 | `requireWorkspaceMember`    |
+| GET      | `/waves`      | Wave 履歴 | `requireWorkspaceMember`    |
+| GET      | `/waves/{id}` | Wave 詳細 | Wave 送信者または受信者のみ |
+| PUT      | `/waves/{id}` | Wave 応答 | Wave 受信者のみ             |
 
 ---
 
