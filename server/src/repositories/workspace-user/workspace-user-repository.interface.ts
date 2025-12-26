@@ -1,4 +1,4 @@
-import type { WorkspaceUserRecord, AddWorkspaceUserData, DbClient } from "../../db/types";
+import type { WorkspaceUserRecord, AddWorkspaceUserData, DbClient } from "../../../db/types";
 import type { MemberRole } from "../../schemas/workspace";
 
 export interface WorkspaceUserRepository {

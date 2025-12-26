@@ -3,6 +3,7 @@ import { Inter, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/ui";
 import { Header } from "@/components/layout";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,10 +32,12 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoSansJP.variable} min-h-screen bg-gray-50 antialiased`}
       >
-        <ToastProvider>
-          <Header />
-          <main>{children}</main>
-        </ToastProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <Header />
+            <main>{children}</main>
+          </ToastProvider>
+        </AuthProvider>
       </body>
     </html>
   );

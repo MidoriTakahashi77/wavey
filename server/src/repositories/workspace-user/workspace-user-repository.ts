@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { db } from "../../db/client";
-import { workspaceUsers } from "../../db/schema";
-import type { DbClient } from "../../db/types";
+import { db } from "../../../db/client";
+import { workspaceUsers } from "../../../db/schema";
+import type { DbClient } from "../../../db/types";
 import type { WorkspaceUserRepository } from "./workspace-user-repository.interface";
 
 export const workspaceUserRepository: WorkspaceUserRepository = {

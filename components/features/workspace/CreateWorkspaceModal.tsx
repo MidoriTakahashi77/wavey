@@ -1,30 +1,43 @@
 "use client";
 
 import { useState } from "react";
-import { Modal, Input, Button } from "@/components/ui";
+import { Modal, Input, Button, useToast } from "@/components/ui";
+import { apiClient, ApiError } from "@/lib/api";
+
+type Workspace = {
+  id: string;
+  name: string;
+  ownerId: string;
+  createdAt: string;
+};
 
 type CreateWorkspaceModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreated?: (name: string) => void;
+  onCreated?: (workspace: Workspace) => void;
 };
 
 export function CreateWorkspaceModal({ open, onOpenChange, onCreated }: CreateWorkspaceModalProps) {
   const [name, setName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const toast = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
 
     setIsSubmitting(true);
-    // モック: 1秒待機
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSubmitting(false);
-
-    onCreated?.(name);
-    setName("");
-    onOpenChange(false);
+    try {
+      const workspace = await apiClient.post<Workspace>("/workspaces", { name: name.trim() });
+      onCreated?.(workspace);
+      setName("");
+      onOpenChange(false);
+    } catch (err) {
+      const message = err instanceof ApiError ? err.message : "ワークスペースの作成に失敗しました";
+      toast.error("エラー", message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

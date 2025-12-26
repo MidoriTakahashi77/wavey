@@ -1,7 +1,7 @@
 import { eq, sql } from "drizzle-orm";
-import { db } from "../../db/client";
-import { workspaceInvites } from "../../db/schema";
-import type { DbClient } from "../../db/types";
+import { db } from "../../../db/client";
+import { workspaceInvites } from "../../../db/schema";
+import type { DbClient } from "../../../db/types";
 import type { InviteRepository } from "./invite-repository.interface";
 
 export const inviteRepository: InviteRepository = {

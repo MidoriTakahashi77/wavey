@@ -1,5 +1,5 @@
-import { db } from "../../db/client";
-import type { WorkspaceRecord, WorkspaceWithMembersRecord } from "../../db/types";
+import { db } from "../../../db/client";
+import type { WorkspaceRecord, WorkspaceWithMembersRecord } from "../../../db/types";
 import { AppError, ErrorCode } from "../../lib/errors";
 import { ok, err, type Result } from "../../lib/result";
 import { workspaceRepository } from "../../repositories/workspace/workspace-repository";

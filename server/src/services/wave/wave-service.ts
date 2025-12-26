@@ -1,4 +1,4 @@
-import type { WaveRecord } from "../../db/types";
+import type { WaveRecord } from "../../../db/types";
 import { AppError, ErrorCode } from "../../lib/errors";
 import { ok, err, type Result } from "../../lib/result";
 import { broadcastWaveSent, broadcastWaveResponded } from "../../lib/realtime";
