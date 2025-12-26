@@ -33,11 +33,24 @@ export async function broadcastToWorkspace(
   const supabase = getSupabaseAdmin();
   const channel = supabase.channel(`workspace:${workspaceId}`);
 
-  await channel.send({
+  // Must subscribe before sending broadcast messages
+  await new Promise<void>((resolve, reject) => {
+    channel.subscribe((status) => {
+      if (status === "SUBSCRIBED") {
+        resolve();
+      } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+        reject(new Error(`Failed to subscribe to channel: ${status}`));
+      }
+    });
+  });
+
+  const result = await channel.send({
     type: "broadcast",
     event: event.type,
     payload: event.payload,
   });
+
+  console.log(`[Realtime] Broadcast ${event.type} to workspace:${workspaceId}`, result);
 
   await supabase.removeChannel(channel);
 }

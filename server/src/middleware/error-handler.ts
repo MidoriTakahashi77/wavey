@@ -52,6 +52,7 @@ export function errorHandler(err: Error, c: Context): Response {
 
   // Zod validation errors from @hono/zod-openapi
   if (err.name === "ZodError" || (err as { status?: number }).status === 400) {
+    console.log("[DEBUG] ZodError details:", JSON.stringify(err, null, 2));
     const body: ErrorResponse = {
       code: ErrorCode.VALIDATION_ERROR,
       message: err.message,
