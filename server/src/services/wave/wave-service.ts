@@ -1,6 +1,7 @@
 import type { WaveRecord } from "../../db/types";
 import { AppError, ErrorCode } from "../../lib/errors";
 import { ok, err, type Result } from "../../lib/result";
+import { broadcastWaveSent, broadcastWaveResponded } from "../../lib/realtime";
 import { waveRepository } from "../../repositories/wave/wave-repository";
 import { workspaceUserRepository } from "../../repositories/workspace-user/workspace-user-repository";
 
@@ -52,6 +53,14 @@ export const waveService = {
       status: "pending",
     });
 
+    // Broadcast wave sent event to workspace
+    await broadcastWaveSent({
+      waveId: wave.id,
+      workspaceId: wave.workspaceId,
+      fromUserId: wave.fromUserId,
+      toUserId: wave.toUserId,
+    });
+
     return ok(wave);
   },
 
@@ -73,6 +82,16 @@ export const waveService = {
     }
 
     await waveRepository.updateWaveStatus(input.waveId, input.status);
+
+    // Broadcast wave responded event to workspace
+    await broadcastWaveResponded({
+      waveId: wave.id,
+      workspaceId: wave.workspaceId,
+      fromUserId: wave.fromUserId,
+      toUserId: wave.toUserId,
+      status: input.status,
+    });
+
     return ok(undefined);
   },
 
