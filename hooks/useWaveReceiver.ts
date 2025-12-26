@@ -21,43 +21,51 @@ type WaveSentPayload = {
 type UseWaveReceiverOptions = {
   workspaceId: string | null;
   currentUserId: string | null;
+  memberNameLookup?: (userId: string) => string;
   onAccept?: (wave: IncomingWave) => void;
   onDecline?: (wave: IncomingWave) => void;
 };
 
 export function useWaveReceiver(options: UseWaveReceiverOptions) {
-  const { workspaceId, currentUserId, onAccept, onDecline } = options;
+  const { workspaceId, currentUserId, memberNameLookup, onAccept, onDecline } = options;
   const [incomingWaves, setIncomingWaves] = useState<IncomingWave[]>([]);
 
   // Subscribe to Realtime wave events
   useEffect(() => {
     if (!workspaceId || !currentUserId) return;
 
+    console.log(`[WaveReceiver] Subscribing to workspace:${workspaceId} for user:${currentUserId}`);
+
     const channel = supabase
       .channel(`workspace:${workspaceId}`)
       .on("broadcast", { event: "wave:sent" }, async ({ payload }) => {
+        console.log("[WaveReceiver] Received wave:sent event:", payload);
         const data = payload as WaveSentPayload;
 
         // Only show waves sent to current user
-        if (data.toUserId !== currentUserId) return;
+        if (data.toUserId !== currentUserId) {
+          console.log("[WaveReceiver] Ignoring wave - not for current user");
+          return;
+        }
 
-        // Fetch sender info (display name)
-        // For now, use userId as placeholder - can be enhanced to fetch from API
         const newWave: IncomingWave = {
           id: data.waveId,
           fromId: data.fromUserId,
-          fromName: data.fromUserId.slice(0, 8), // Placeholder
+          fromName: memberNameLookup?.(data.fromUserId) ?? data.fromUserId.slice(0, 8),
           timestamp: new Date(),
         };
 
+        console.log("[WaveReceiver] Adding wave to queue:", newWave);
         setIncomingWaves((prev) => [...prev, newWave]);
       })
-      .subscribe();
+      .subscribe((status) => {
+        console.log(`[WaveReceiver] Channel status: ${status}`);
+      });
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [workspaceId, currentUserId]);
+  }, [workspaceId, currentUserId, memberNameLookup]);
 
   // Wave承諾（話す）
   const acceptWave = useCallback(

@@ -85,7 +85,14 @@ export function createApp() {
 
   app.openapi(updateProfileRoute, async (c) => {
     const authUser = c.get("user");
-    const body = c.req.valid("json");
+    let body;
+    try {
+      body = c.req.valid("json");
+      console.log("[DEBUG] updateProfile - validated body:", body);
+    } catch (e) {
+      console.log("[DEBUG] updateProfile - validation error:", e);
+      throw e;
+    }
 
     const existingUser = await userRepository.findUserById(authUser.id);
     if (!existingUser) {
