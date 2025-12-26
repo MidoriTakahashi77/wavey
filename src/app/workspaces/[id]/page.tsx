@@ -9,7 +9,7 @@ import { WaveNotification } from "@/components/features/wave/WaveNotification";
 import { CallModal } from "@/components/features/call";
 import { useWaveReceiver } from "@/hooks/useWaveReceiver";
 import { useCall } from "@/hooks/useCall";
-import { HiArrowLeft, HiCog, HiBell } from "react-icons/hi";
+import { HiArrowLeft, HiCog } from "react-icons/hi";
 
 type WaveResult = "accepted" | "declined" | "pending";
 
@@ -77,8 +77,11 @@ export default function WorkspacePage() {
     },
   });
 
-  // Wave受信
+  // Wave受信（実装時は Supabase Auth からユーザーIDを取得）
+  // TODO: params.id から workspaceId を取得、supabase.auth.getUser() から currentUserId を取得
   const waveReceiver = useWaveReceiver({
+    workspaceId: MOCK_WORKSPACE.id, // 実装時は params.id
+    currentUserId: "me", // 実装時は Supabase Auth から取得
     onAccept: (wave) => {
       // 履歴に追加
       setWaves((prev) => [
@@ -112,17 +115,6 @@ export default function WorkspacePage() {
       ]);
     },
   });
-
-  // デモ用：ランダムにWaveを受信
-  const simulateIncomingWave = () => {
-    const randomMember = MOCK_MEMBERS.filter((m) => m.id !== "me")[
-      Math.floor(Math.random() * (MOCK_MEMBERS.length - 1))
-    ];
-    waveReceiver.receiveWave({
-      fromId: randomMember.id,
-      fromName: randomMember.name,
-    });
-  };
 
   const handleMemberClick = (memberId: string) => {
     if (memberId === "me") return;
@@ -161,11 +153,6 @@ export default function WorkspacePage() {
           <h1 className="text-xl font-bold text-gray-900">{MOCK_WORKSPACE.name}</h1>
         </div>
         <div className="flex items-center gap-2">
-          {/* デモ用：Wave受信シミュレート */}
-          <Button variant="secondary" size="sm" onClick={simulateIncomingWave}>
-            <HiBell className="mr-1 h-4 w-4" />
-            Wave受信デモ
-          </Button>
           <Link href={`/workspaces/${MOCK_WORKSPACE.id}/settings`}>
             <Button variant="ghost" size="sm">
               <HiCog className="h-4 w-4" />
