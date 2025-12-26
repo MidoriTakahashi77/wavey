@@ -1,4 +1,4 @@
-import type { InviteRecord, CreateInviteData, DbClient } from "../../db/types";
+import type { InviteRecord, CreateInviteData, DbClient } from "../../../db/types";
 
 export interface InviteRepository {
   findInviteById(id: string, tx?: DbClient): Promise<InviteRecord | null>;

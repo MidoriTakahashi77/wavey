@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { db } from "../../db/client";
-import { users } from "../../db/schema";
-import type { DbClient } from "../../db/types";
+import { db } from "../../../db/client";
+import { users } from "../../../db/schema";
+import type { DbClient } from "../../../db/types";
 import type { UserRepository } from "./user-repository.interface";
 
 export const userRepository: UserRepository = {

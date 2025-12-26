@@ -1,4 +1,4 @@
-import type { WaveRecord, CreateWaveData, DbClient } from "../../db/types";
+import type { WaveRecord, CreateWaveData, DbClient } from "../../../db/types";
 import type { WaveStatus } from "../../schemas/wave";
 
 export interface WaveRepository {

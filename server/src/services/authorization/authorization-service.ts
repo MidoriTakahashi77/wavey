@@ -1,4 +1,4 @@
-import type { WorkspaceRecord } from "../../db/types";
+import type { WorkspaceRecord } from "../../../db/types";
 import { AppError, ErrorCode } from "../../lib/errors";
 import { ok, err, type Result } from "../../lib/result";
 import {

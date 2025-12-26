@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
-import { db } from "../../db/client";
-import { waves } from "../../db/schema";
-import type { DbClient } from "../../db/types";
+import { db } from "../../../db/client";
+import { waves } from "../../../db/schema";
+import type { DbClient } from "../../../db/types";
 import type { WaveRepository } from "./wave-repository.interface";
 
 export const waveRepository: WaveRepository = {

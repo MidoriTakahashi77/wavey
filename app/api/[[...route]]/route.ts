@@ -1,5 +1,5 @@
 import { handle } from "hono/vercel";
-import { createApp } from "../../../../server/src/app";
+import { createApp } from "../../../server/src/app";
 
 const app = createApp();
 

@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto";
-import { db } from "../../db/client";
-import type { InviteRecord, WorkspaceUserRecord } from "../../db/types";
+import { db } from "../../../db/client";
+import type { InviteRecord, WorkspaceUserRecord } from "../../../db/types";
 import { AppError, ErrorCode } from "../../lib/errors";
 import { LIMITS } from "../../lib/constants";
 import { ok, err, type Result } from "../../lib/result";

@@ -3,7 +3,7 @@ import type {
   CreateWorkspaceData,
   WorkspaceWithMembersRecord,
   DbClient,
-} from "../../db/types";
+} from "../../../db/types";
 
 export interface WorkspaceRepository {
   findWorkspaceById(id: string, tx?: DbClient): Promise<WorkspaceRecord | null>;

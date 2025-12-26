@@ -1,4 +1,4 @@
-import type { UserRecord, CreateUserData, UpdateUserData, DbClient } from "../../db/types";
+import type { UserRecord, CreateUserData, UpdateUserData, DbClient } from "../../../db/types";
 
 export interface UserRepository {
   findUserById(id: string, tx?: DbClient): Promise<UserRecord | null>;
